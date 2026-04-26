@@ -172,18 +172,18 @@ function Dashboard({ user }) {
   const greeting = hour < 12 ? 'Good Morning' : hour < 18 ? 'Good Afternoon' : 'Good Evening';
 
   // ── CATEGORY COLOR ENGINE ──
-  const getCategoryColor = (category) => {
+  const getCategoryColor = (theme, category) => {
     const cat = category?.toUpperCase();
     const colors = {
-      WORK: '#0071E3',      // Premium Apple Blue
-      PERSONAL: '#AF52DE',  // Premium Purple
-      GYM: '#34C759',       // High-Impact Green
-      STUDY: '#FF9500',     // Bright Orange
-      HEALTH: '#FF3B30',    // Vibrant Red
-      SHOPPING: '#FF2D55',  // Sharp Pink
-      OTHER: '#8E8E93',     // Neutral Gray
+      WORK: theme.palette.primary.main,
+      PERSONAL: '#AF52DE',
+      GYM: theme.palette.success.main,
+      STUDY: theme.palette.warning.main,
+      HEALTH: theme.palette.error.main,
+      SHOPPING: '#FF2D55',
+      OTHER: theme.palette.text.secondary,
     };
-    return colors[cat] || '#8E8E93';
+    return colors[cat] || theme.palette.text.secondary;
   };
 
   const currentDate = format(currentTime, 'EEEE, MMM d');
@@ -196,13 +196,12 @@ function Dashboard({ user }) {
   );
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', pb: 4, overflowX: 'hidden' }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', pb: 4, color: 'text.primary' }}>
 
       {/* 1. CLEAN GREETING SECTION */}
       <Box sx={{ 
         width: '100%', height: { xs: 'auto', md: 100 }, py: { xs: 2, md: 0 }, px: { xs: 2, md: 4 }, 
-        bgcolor: alpha(muiTheme.palette.background.paper, 0.7), 
-        backdropFilter: 'blur(20px)',
+        bgcolor: 'background.paper',
         borderBottom: '1px solid', borderColor: 'divider',
         display: 'flex', alignItems: 'center'
       }}>
@@ -220,12 +219,11 @@ function Dashboard({ user }) {
                 <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1.1, fontSize: { xs: '1.5rem', md: '2rem' } }}>
                   {greeting}, {firstName}
                 </Typography>
-                <Typography variant="caption" sx={{ color: 'text.disabled', fontWeight: 600, fontStyle: 'italic', display: 'block' }}>
+                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, fontStyle: 'italic', display: 'block' }}>
                   Master your day.
                 </Typography>
               </Box>
             </Stack>
-
           </Stack>
         </Container>
       </Box>
@@ -254,9 +252,9 @@ function Dashboard({ user }) {
           >
             {[
               { label: 'TOTAL', val: stats.total, icon: <AssignmentRoundedIcon />, color: muiTheme.palette.primary.main },
-              { label: 'PENDING', val: stats.pending, icon: <PendingActionsRoundedIcon />, color: '#FF9500' },
-              { label: 'DONE', val: stats.completed, icon: <CheckCircleRoundedIcon />, color: '#34C759' },
-              { label: 'TODAY', val: null, icon: <TodayRoundedIcon />, color: '#0071E3' },
+              { label: 'PENDING', val: stats.pending, icon: <PendingActionsRoundedIcon />, color: muiTheme.palette.warning.main },
+              { label: 'DONE', val: stats.completed, icon: <CheckCircleRoundedIcon />, color: muiTheme.palette.success.main },
+              { label: 'TODAY', val: null, icon: <TodayRoundedIcon />, color: muiTheme.palette.info.main },
             ].map((stat, idx) => (
               <Card 
                 key={idx} 
@@ -271,7 +269,7 @@ function Dashboard({ user }) {
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   '&:hover': { 
                     transform: 'translateY(-6px) scale(1.01)', 
-                    boxShadow: '0 12px 24px rgba(0,0,0,0.1)', 
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 12px 24px rgba(0,0,0,0.4)' : '0 12px 24px rgba(0,0,0,0.08)',
                     borderColor: alpha(stat.color, 0.6) 
                   }
                 }}
@@ -282,13 +280,13 @@ function Dashboard({ user }) {
                 <Box sx={{ flexGrow: 1 }}>
                   {idx === 3 ? (
                     <Box>
-                      <Typography variant="h5" sx={{ fontWeight: 900, fontSize: '1.2rem', lineHeight: 1 }}>{currentDate}</Typography>
+                      <Typography variant="h5" sx={{ fontWeight: 900, fontSize: '1.2rem', lineHeight: 1, color: 'text.primary' }}>{currentDate}</Typography>
                       <Typography variant="body2" sx={{ fontWeight: 800, color: 'text.secondary', mt: 1 }}>{currentTimeStr}</Typography>
                     </Box>
                   ) : (
                     <Box>
-                      <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: '-0.02em' }}>{stat.val}</Typography>
-                      <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.disabled', letterSpacing: '0.05em', mt: 0.5, display: 'block' }}>
+                      <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: '-0.02em', color: 'text.primary' }}>{stat.val}</Typography>
+                      <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', letterSpacing: '0.05em', mt: 0.5, display: 'block' }}>
                         {stat.label}
                       </Typography>
                     </Box>
@@ -301,7 +299,7 @@ function Dashboard({ user }) {
           {/* 3. CLEAN ACTION BAR (Search removed) */}
           <Box sx={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            bgcolor: alpha(muiTheme.palette.background.paper, 0.5), p: 1.5, borderRadius: '16px', border: '1px solid', borderColor: 'divider'
+            bgcolor: 'background.paper', p: 1.5, borderRadius: '16px', border: '1px solid', borderColor: 'divider'
           }}>
             <Stack direction="row" spacing={2} alignItems="center">
               <Button
@@ -313,7 +311,7 @@ function Dashboard({ user }) {
                 Assemble Task
               </Button>
 
-              <Divider orientation="vertical" flexItem sx={{ height: 24, my: 'auto', borderColor: alpha(muiTheme.palette.divider, 0.6) }} />
+              <Divider orientation="vertical" flexItem sx={{ height: 24, my: 'auto', borderColor: 'divider' }} />
 
               <Stack direction="row" spacing={1.5}>
                 {['all', 'pending', 'high'].map((f) => (
@@ -336,7 +334,7 @@ function Dashboard({ user }) {
           {showTaskForm && (
             <Grow in={showTaskForm}>
               <Box sx={{ mt: -1 }}>
-                <Card sx={{ borderRadius: '14px', border: '1px solid', borderColor: 'divider', p: 0.5 }}>
+                <Card sx={{ borderRadius: '14px', border: '1px solid', borderColor: 'divider', p: 0.5, bgcolor: 'background.paper' }}>
                   <TaskForm addTask={addTask} />
                 </Card>
               </Box>
@@ -365,7 +363,7 @@ function Dashboard({ user }) {
                     }}>
                       <Checkbox
                         checked={task.completed} onChange={() => toggleComplete(task.id)}
-                        sx={{ p: 0, '&.Mui-checked': { color: 'success.main' } }}
+                        sx={{ p: 0, '&.Mui-checked': { color: 'success.main' }, color: 'text.secondary' }}
                       />
                       <Box sx={{ flex: 1, minWidth: 0 }}>
                         <Typography variant="body1" sx={{ 
@@ -383,26 +381,26 @@ function Dashboard({ user }) {
                             size="small" 
                             sx={{ 
                               fontWeight: 900, 
-                              borderRadius: '20px', 
+                              borderRadius: '6px', 
                               px: '10px',
                               height: 22, 
                               fontSize: '11px', 
                               textTransform: 'uppercase',
-                              bgcolor: getCategoryColor(task.category),
-                              color: 'white'
+                              bgcolor: alpha(getCategoryColor(muiTheme, task.category), 0.1),
+                              color: getCategoryColor(muiTheme, task.category)
                             }} 
                           />
                           {task.priority === 'high' && (
                             <Chip label="Focus" size="small" sx={{ fontWeight: 900, borderRadius: '4px', height: 18, fontSize: '9px', bgcolor: alpha(muiTheme.palette.error.main, 0.1), color: 'error.main' }} />
                           )}
-                          <Typography variant="caption" sx={{ color: 'text.disabled', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 0.5 }}>
                             <AccessTimeRoundedIcon sx={{ fontSize: 13 }} /> {task.time || 'Flexible'}
                           </Typography>
                         </Stack>
                       </Box>
                       <Stack direction="row" spacing={0.5} sx={{ opacity: { xs: 1, md: 0 }, '&:hover': { opacity: 1 }, transition: 'opacity 0.25s ease' }}>
-                        <IconButton size="small" onClick={() => setEditingTask(task)} color="primary"><EditRoundedIcon fontSize="small" /></IconButton>
-                        <IconButton size="small" onClick={() => deleteTask(task.id)} color="error" sx={{ '&:hover': { color: 'error.main', filter: 'drop-shadow(0 0 4px rgba(239,68,68,0.4))' } }}><DeleteOutlineRoundedIcon fontSize="small" /></IconButton>
+                        <IconButton size="small" onClick={() => setEditingTask(task)} sx={{ color: 'primary.main' }}><EditRoundedIcon fontSize="small" /></IconButton>
+                        <IconButton size="small" onClick={() => deleteTask(task.id)} sx={{ color: alpha(muiTheme.palette.error.main, 0.6), '&:hover': { color: 'error.main' } }}><DeleteOutlineRoundedIcon fontSize="small" /></IconButton>
                       </Stack>
                     </Box>
                   </ListItem>

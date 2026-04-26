@@ -1,97 +1,137 @@
 import React from 'react';
-import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, format, isSameMonth, isToday } from 'date-fns';
+import { Box, Typography, Stack, alpha, useTheme } from '@mui/material';
+import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, format, isSameMonth, isSameDay } from 'date-fns';
 
-const CATEGORIES = {
-  work: 'bg-blue-500',
-  personal: 'bg-green-500',
-  important: 'bg-red-500',
-  study: 'bg-purple-500',
-};
+function MonthView({ currentDate, selectedDate, tasks, onDateClick, onEventClick }) {
+  const theme = useTheme();
+  
+  const getCategoryColor = (category) => {
+    const cat = category?.toUpperCase();
+    const colors = {
+      WORK: theme.palette.primary.main,
+      PERSONAL: '#AF52DE',
+      GYM: theme.palette.success.main,
+      STUDY: theme.palette.warning.main,
+      HEALTH: theme.palette.error.main,
+      SHOPPING: '#FF2D55',
+      OTHER: theme.palette.text.secondary,
+    };
+    return colors[cat] || theme.palette.text.secondary;
+  };
 
-function MonthView({ currentDate, tasks, onDateClick, onEventClick }) {
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
 
-  const dateFormat = "d";
   const days = eachDayOfInterval({ start: startDate, end: endDate });
-  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const weekDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+  const renderEvents = (date) => {
+    const dateStr = format(date, 'yyyy-MM-dd');
+    const dayTasks = tasks.filter(t => (t.event_date || t.date) === dateStr);
+    
+    if (dayTasks.length === 0) return null;
+
+    if (dayTasks.length > 2) {
+      return (
+        <Stack spacing={0.6} sx={{ width: '100%', mt: 1 }}>
+          <Stack direction="row" spacing={0.8} sx={{ px: 1 }}>
+             {dayTasks.slice(0, 3).map((t, idx) => (
+               <Box key={idx} sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: getCategoryColor(t.category) }} />
+             ))}
+          </Stack>
+          <Typography variant="caption" sx={{ fontSize: '10px', color: 'text.secondary', px: 1, fontWeight: 900 }}>
+            + {dayTasks.length - 2} more
+          </Typography>
+        </Stack>
+      );
+    }
+
+    return (
+      <Stack spacing={0.6} sx={{ width: '100%', mt: 1 }}>
+        {dayTasks.map((task) => (
+          <Stack key={task.id} direction="row" alignItems="center" spacing={1} sx={{ px: 1 }}>
+            <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: getCategoryColor(task.category), flexShrink: 0 }} />
+            <Typography noWrap sx={{ fontSize: '10px', color: 'text.primary', fontWeight: 700, opacity: task.completed ? 0.4 : 0.9 }}>
+              {task.title}
+            </Typography>
+          </Stack>
+        ))}
+      </Stack>
+    );
+  };
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.default', transition: 'all 0.3s ease' }}>
       {/* Weekday Header */}
-      <div className="grid grid-cols-7 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+      <Box sx={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(7, 1fr)', 
+        borderBottom: '1px solid', 
+        borderColor: 'divider', 
+        bgcolor: 'background.paper',
+        transition: 'all 0.3s ease'
+      }}>
         {weekDays.map(day => (
-          <div key={day} className="py-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-            {day}
-          </div>
+          <Box key={day} sx={{ py: 2, borderRight: '1px solid', borderColor: 'divider', '&:last-child': { borderRight: 0 }, transition: 'all 0.3s ease' }}>
+            <Typography align="center" sx={{ fontSize: '11px', fontWeight: 900, color: 'text.secondary', letterSpacing: '0.1em', opacity: 0.8 }}>
+              {day}
+            </Typography>
+          </Box>
         ))}
-      </div>
+      </Box>
 
       {/* Days Grid */}
-      <div className="flex-1 grid grid-cols-7 grid-rows-5 lg:grid-rows-auto">
+      <Box sx={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridAutoRows: '1fr', transition: 'all 0.3s ease' }}>
         {days.map((day, i) => {
+          const isSel = isSameDay(day, selectedDate);
+          const isCurrMonth = isSameMonth(day, monthStart);
+          const isTdy = isSameDay(day, new Date());
           const formattedDate = format(day, "yyyy-MM-dd");
-          const dayTasks = tasks.filter(t => t.date === formattedDate).sort((a, b) => a.time.localeCompare(b.time));
-          const isCurrentMonth = isSameMonth(day, monthStart);
-          const isCurrentDay = isToday(day);
 
           return (
-            <div 
-              key={day.toString()} 
+            <Box
+              key={day.toString()}
               onClick={() => onDateClick(formattedDate)}
-              className={`min-h-[100px] lg:min-h-[120px] p-1.5 sm:p-2 border-r border-b border-slate-100 dark:border-slate-700/50 transition-colors hover:bg-slate-50 dark:hover:bg-slate-700/30 cursor-pointer ${
-                !isCurrentMonth ? 'bg-slate-50/50 dark:bg-slate-800/30 text-slate-400 dark:text-slate-600' : 'text-slate-700 dark:text-slate-200'
-              } ${(i + 1) % 7 === 0 ? 'border-r-0' : ''}`}
+              sx={{
+                borderRight: '1px solid',
+                borderBottom: '1px solid',
+                borderColor: 'divider',
+                p: 1.5,
+                cursor: 'pointer',
+                position: 'relative',
+                bgcolor: isSel 
+                  ? (theme.palette.mode === 'dark' ? alpha(theme.palette.primary.main, 0.15) : alpha(theme.palette.primary.main, 0.04)) 
+                  : isCurrMonth ? 'background.paper' : (theme.palette.mode === 'dark' ? alpha(theme.palette.background.default, 0.3) : alpha(theme.palette.background.default, 0.6)),
+                boxShadow: isSel ? `inset 0 0 0 2px ${theme.palette.primary.main}` : 'none',
+                zIndex: isSel ? 1 : 0,
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': { 
+                  bgcolor: isSel ? alpha(theme.palette.primary.main, 0.18) : 'action.hover',
+                  zIndex: 2,
+                  boxShadow: theme.palette.mode === 'dark' ? '0 0 20px rgba(0,0,0,0.5)' : '0 4px 20px rgba(0,0,0,0.05)'
+                },
+                '&:nth-of-type(7n)': { borderRight: 0 }
+              }}
             >
-              {/* Day Number */}
-              <div className="flex items-center justify-between mb-1">
-                <span className={`text-xs sm:text-sm font-semibold flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full ${
-                  isCurrentDay ? 'bg-blue-600 text-white shadow-sm' : ''
-                }`}>
-                  {format(day, dateFormat)}
-                </span>
-                {dayTasks.length > 0 && (
-                  <span className="lg:hidden text-[10px] font-medium text-slate-400">{dayTasks.length} events</span>
-                )}
-              </div>
-
-              {/* Events */}
-              <div className="hidden lg:flex flex-col gap-1 overflow-y-auto max-h-[80px] custom-scrollbar">
-                {dayTasks.slice(0, 3).map(task => {
-                  const color = CATEGORIES[task.category || 'work'] || CATEGORIES.work;
-                  return (
-                    <div
-                      key={task.id}
-                      onClick={(e) => { e.stopPropagation(); onEventClick(task); }}
-                      className={`px-2 py-1 text-xs rounded truncate transition-all duration-200 hover:opacity-80 text-white ${color} ${task.completed ? 'opacity-50 line-through' : ''}`}
-                      title={task.title}
-                    >
-                      {task.time && <span className="font-semibold mr-1">{task.time}</span>}
-                      {task.title}
-                    </div>
-                  );
-                })}
-                {dayTasks.length > 3 && (
-                  <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400 pl-1">
-                    + {dayTasks.length - 3} more
-                  </div>
-                )}
-              </div>
-              
-              {/* Mobile Dots */}
-              <div className="flex lg:hidden flex-wrap gap-1 mt-1">
-                {dayTasks.map(task => {
-                  const color = CATEGORIES[task.category || 'work'] || CATEGORIES.work;
-                  return <div key={task.id} className={`w-2 h-2 rounded-full ${color}`}></div>;
-                })}
-              </div>
-            </div>
+              <Box sx={{
+                width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px',
+                bgcolor: isTdy ? 'primary.main' : 'transparent',
+                color: isTdy ? 'white' : (isCurrMonth ? 'text.primary' : 'text.secondary'),
+                fontSize: '13px', fontWeight: 900, mb: 1,
+                opacity: isCurrMonth ? 1 : 0.4,
+                transition: 'all 0.2s ease',
+                boxShadow: isTdy ? `0 4px 12px ${alpha(theme.palette.primary.main, 0.4)}` : 'none'
+              }}>
+                {format(day, "d")}
+              </Box>
+              {renderEvents(day)}
+            </Box>
           );
         })}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

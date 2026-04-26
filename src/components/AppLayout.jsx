@@ -14,21 +14,24 @@ function AppLayout({ user, onLogout }) {
   };
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
+    <Box sx={{ display: 'flex', height: '100vh', width: '100vw', overflow: 'hidden', bgcolor: 'background.default' }}>
       {/* Sidebar - Persistent on desktop, drawer on mobile */}
       <Sidebar 
-        mobileOpen={mobileOpen} 
-        onClose={handleDrawerToggle} 
+        isOpen={mobileOpen} 
+        setIsOpen={setMobileOpen} 
+        user={user}
       />
 
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          width: { md: `calc(100% - 280px)` },
-          minHeight: '100vh',
+          width: { md: `calc(100% - 260px)` },
+          height: '100vh',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          overflow: 'hidden',
+          position: 'relative'
         }}
       >
         <Navbar 
@@ -37,8 +40,18 @@ function AppLayout({ user, onLogout }) {
           onMenuClick={handleDrawerToggle} 
         />
 
-        {/* Page Content */}
-        <Box sx={{ flexGrow: 1, p: { xs: 2, md: 0 } }}>
+        {/* Page Content - Internal Scroll Only */}
+        <Box 
+          sx={{ 
+            flexGrow: 1, 
+            overflowY: 'auto', 
+            p: { xs: 2, md: 4 },
+            scrollBehavior: 'smooth',
+            bgcolor: 'background.default',
+            '&::-webkit-scrollbar': { width: '5px' },
+            '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(0,0,0,0.1)', borderRadius: '10px' }
+          }}
+        >
           <Outlet />
         </Box>
       </Box>

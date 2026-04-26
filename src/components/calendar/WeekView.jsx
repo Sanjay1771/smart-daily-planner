@@ -1,89 +1,147 @@
 import React from 'react';
+import { Box, Typography, Stack, alpha, useTheme } from '@mui/material';
 import { startOfWeek, endOfWeek, eachDayOfInterval, format, isToday } from 'date-fns';
 
-const CATEGORIES = {
-  work: 'bg-blue-500',
-  personal: 'bg-green-500',
-  important: 'bg-red-500',
-  study: 'bg-purple-500',
-};
-
 function WeekView({ currentDate, tasks, onDateClick, onEventClick }) {
+  const theme = useTheme();
+  
+  const getCategoryColor = (category) => {
+    const cat = category?.toUpperCase();
+    const colors = {
+      WORK: theme.palette.primary.main,
+      PERSONAL: '#AF52DE',
+      GYM: theme.palette.success.main,
+      STUDY: theme.palette.warning.main,
+      HEALTH: theme.palette.error.main,
+      SHOPPING: '#FF2D55',
+      OTHER: theme.palette.text.secondary,
+    };
+    return colors[cat] || theme.palette.text.secondary;
+  };
+
   const startDate = startOfWeek(currentDate);
   const endDate = endOfWeek(currentDate);
   const days = eachDayOfInterval({ start: startDate, end: endDate });
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.default', transition: 'all 0.3s ease' }}>
       {/* Header */}
-      <div className="grid grid-cols-8 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-        <div className="py-3 px-2 border-r border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs font-semibold text-slate-400">
-          Time
-        </div>
+      <Box sx={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(8, 1fr)', 
+        borderBottom: '1px solid', 
+        borderColor: 'divider', 
+        bgcolor: 'background.paper',
+        transition: 'all 0.3s ease'
+      }}>
+        <Box sx={{ py: 2, borderRight: '1px solid', borderColor: 'divider', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
+          <Typography sx={{ fontSize: '11px', fontWeight: 900, color: 'text.secondary', letterSpacing: '0.05em' }}>TIME</Typography>
+        </Box>
         {days.map(day => {
-          const isCurrentDay = isToday(day);
+          const isTdy = isToday(day);
           return (
-            <div key={day.toString()} onClick={() => onDateClick(format(day, 'yyyy-MM-dd'))} className="py-3 border-r border-slate-200 dark:border-slate-700 last:border-0 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
-              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{format(day, 'EEE')}</span>
-              <span className={`text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mt-1 ${isCurrentDay ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-800 dark:text-white'}`}>
+            <Box 
+              key={day.toString()} 
+              onClick={() => onDateClick(format(day, 'yyyy-MM-dd'))} 
+              sx={{ 
+                py: 1.5, borderRight: '1px solid', borderColor: 'divider', '&:last-child': { borderRight: 0 },
+                display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer',
+                bgcolor: isTdy ? alpha(theme.palette.primary.main, 0.05) : 'transparent',
+                transition: 'all 0.3s ease',
+                '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.08) }
+              }}
+            >
+              <Typography sx={{ fontSize: '10px', fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', opacity: 0.8 }}>{format(day, 'EEE')}</Typography>
+              <Typography sx={{ 
+                fontSize: '16px', fontWeight: 800, mt: 0.5,
+                color: isTdy ? 'primary.main' : 'text.primary',
+                transition: 'all 0.2s ease'
+              }}>
                 {format(day, 'd')}
-              </span>
-            </div>
+              </Typography>
+            </Box>
           );
         })}
-      </div>
+      </Box>
 
       {/* Grid */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar relative">
-        <div className="grid grid-cols-8 min-h-[800px]">
+      <Box sx={{ flex: 1, overflowY: 'auto', position: 'relative', transition: 'all 0.3s ease' }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', minHeight: '1200px', transition: 'all 0.3s ease' }}>
           {/* Time Column */}
-          <div className="border-r border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30">
+          <Box sx={{ borderRight: '1px solid', borderColor: 'divider', bgcolor: 'background.default', transition: 'all 0.3s ease' }}>
             {hours.map(hour => (
-              <div key={hour} className="h-16 border-b border-slate-100 dark:border-slate-700/50 flex items-start justify-center pt-2">
-                <span className="text-xs font-medium text-slate-400">{hour === 0 ? '12 AM' : hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`}</span>
-              </div>
+              <Box key={hour} sx={{ height: '64px', borderBottom: '1px solid', borderColor: 'divider', opacity: 0.3, display: 'flex', pt: 1, justifyContent: 'center', transition: 'all 0.3s ease' }}>
+                <Typography sx={{ fontSize: '11px', fontWeight: 700, color: 'text.secondary' }}>
+                  {format(new Date().setHours(hour, 0), 'h a')}
+                </Typography>
+              </Box>
             ))}
-          </div>
+          </Box>
 
           {/* Days Columns */}
           {days.map(day => {
             const formattedDate = format(day, "yyyy-MM-dd");
-            const dayTasks = tasks.filter(t => t.date === formattedDate);
+            const dayTasks = tasks.filter(t => (t.event_date || t.date) === formattedDate);
             return (
-              <div key={day.toString()} className="relative border-r border-slate-200 dark:border-slate-700 last:border-0">
-                {/* Grid Lines */}
+              <Box key={day.toString()} sx={{ position: 'relative', borderRight: '1px solid', borderColor: 'divider', '&:last-child': { borderRight: 0 }, transition: 'all 0.3s ease' }}>
                 {hours.map(hour => (
-                  <div key={hour} onClick={() => onDateClick(formattedDate, `${hour.toString().padStart(2, '0')}:00`)} className="h-16 border-b border-slate-100 dark:border-slate-700/50 cursor-pointer hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors border-dashed border-opacity-50"></div>
+                  <Box 
+                    key={hour} 
+                    onClick={() => onDateClick(formattedDate, `${hour.toString().padStart(2, '0')}:00`)} 
+                    sx={{ 
+                      height: '64px', 
+                      borderBottom: '1px solid', 
+                      borderColor: 'divider', 
+                      opacity: 0.3,
+                      cursor: 'pointer', 
+                      transition: 'all 0.2s ease',
+                      '&:hover': { bgcolor: 'action.hover', opacity: 1 } 
+                    }}
+                  ></Box>
                 ))}
                 
-                {/* Events */}
                 {dayTasks.map(task => {
-                  if (!task.time) return null; // Only show timed events
-                  const [h, m] = task.time.split(':').map(Number);
+                  if (!task.start_time && !task.time) return null;
+                  const time = task.start_time || task.time;
+                  const [h, m] = time.split(':').map(Number);
                   const top = (h * 64) + (m / 60 * 64);
                   const durationMins = task.duration || 60;
                   const height = (durationMins / 60) * 64;
-                  const color = CATEGORIES[task.category || 'work'] || CATEGORIES.work;
+                  const color = getCategoryColor(task.category);
 
                   return (
-                    <div
+                    <Box
                       key={task.id}
                       onClick={(e) => { e.stopPropagation(); onEventClick(task); }}
-                      style={{ top: `${top}px`, height: `${height}px` }}
-                      className={`absolute left-1 right-1 rounded-md p-1.5 text-xs text-white overflow-hidden shadow-sm hover:opacity-90 transition-opacity cursor-pointer ${color} ${task.completed ? 'opacity-50' : ''}`}
+                      sx={{
+                        position: 'absolute', left: '4px', right: '4px', top: `${top}px`, height: `${height}px`,
+                        borderRadius: '8px', p: 1, 
+                        bgcolor: theme.palette.mode === 'dark' ? alpha(color, 0.2) : alpha(color, 0.1), 
+                        borderLeft: `4px solid ${color}`,
+                        border: theme.palette.mode === 'light' ? `1px solid ${alpha(color, 0.2)}` : 'none',
+                        cursor: 'pointer', overflow: 'hidden', 
+                        transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                        zIndex: 2,
+                        '&:hover': { 
+                          bgcolor: alpha(color, 0.25),
+                          transform: 'scale(1.02)',
+                          boxShadow: `0 4px 12px ${alpha(color, 0.2)}`,
+                          zIndex: 3
+                        }
+                      }}
                     >
-                      <p className={`font-semibold truncate ${task.completed ? 'line-through' : ''}`}>{task.title}</p>
-                      <p className="text-[10px] opacity-90">{task.time}</p>
-                    </div>
+                      <Typography noWrap sx={{ fontSize: '11px', fontWeight: 800, color: 'text.primary' }}>{task.title}</Typography>
+                      <Typography sx={{ fontSize: '10px', color: 'text.secondary', fontWeight: 600 }}>{time}</Typography>
+                    </Box>
                   );
                 })}
-              </div>
+              </Box>
             );
           })}
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

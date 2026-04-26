@@ -1,7 +1,12 @@
 import React from 'react';
-import { format, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays } from 'date-fns';
+import { Box, Stack, Typography, Button, IconButton, alpha, useTheme } from '@mui/material';
+import { format, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays, startOfToday } from 'date-fns';
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
 function CalendarHeader({ currentDate, setCurrentDate, view, setView }) {
+  const theme = useTheme();
+
   const handlePrev = () => {
     if (view === 'month') setCurrentDate(subMonths(currentDate, 1));
     else if (view === 'week') setCurrentDate(subWeeks(currentDate, 1));
@@ -15,53 +20,118 @@ function CalendarHeader({ currentDate, setCurrentDate, view, setView }) {
   };
 
   const handleToday = () => {
-    setCurrentDate(new Date());
-  };
-
-  const getHeaderText = () => {
-    if (view === 'month') return format(currentDate, 'MMMM yyyy');
-    if (view === 'week') {
-      // Simplistic header for week
-      return format(currentDate, 'MMMM yyyy');
-    }
-    return format(currentDate, 'MMMM d, yyyy');
+    setCurrentDate(startOfToday());
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
-      <div className="flex items-center gap-4">
-        <button onClick={handleToday} className="px-4 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
-          Today
-        </button>
-        <div className="flex items-center gap-1">
-          <button onClick={handlePrev} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition-colors">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-          </button>
-          <button onClick={handleNext} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition-colors">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-          </button>
-        </div>
-        <h2 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white min-w-[150px]">
-          {getHeaderText()}
-        </h2>
-      </div>
+    <Box 
+      sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between',
+        alignItems: 'center', 
+        mb: 4, 
+        px: 1,
+        width: '100%',
+        transition: 'all 0.3s ease'
+      }}
+    >
+      {/* LEFT ZONE: Arrows + Today + Month Title */}
+      <Stack direction="row" alignItems="center" spacing={4} sx={{ transition: 'all 0.3s ease' }}>
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <Stack 
+            direction="row" 
+            spacing={0.5} 
+            sx={{ 
+              bgcolor: 'background.paper', 
+              p: 0.6, 
+              borderRadius: '14px', 
+              border: '1px solid',
+              borderColor: 'divider',
+              boxShadow: theme.palette.mode === 'dark' ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.04)',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            <IconButton size="small" onClick={handlePrev} sx={{ color: 'text.primary', transition: 'all 0.2s ease', '&:hover': { bgcolor: 'action.hover', transform: 'translateX(-2px)' } }}>
+              <ChevronLeftRoundedIcon fontSize="small" />
+            </IconButton>
+            <IconButton size="small" onClick={handleNext} sx={{ color: 'text.primary', transition: 'all 0.2s ease', '&:hover': { bgcolor: 'action.hover', transform: 'translateX(2px)' } }}>
+              <ChevronRightRoundedIcon fontSize="small" />
+            </IconButton>
+          </Stack>
+          
+          <Button 
+            onClick={handleToday}
+            sx={{ 
+              bgcolor: 'background.paper', 
+              color: 'text.primary', 
+              textTransform: 'none', 
+              px: 2.5, 
+              height: 40, 
+              borderRadius: '12px', 
+              border: '1px solid',
+              borderColor: 'divider',
+              fontWeight: 800,
+              fontSize: '0.85rem',
+              '&:hover': { bgcolor: 'action.hover', transform: 'translateY(-1px)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' },
+              transition: 'all 0.2s ease'
+            }}
+          >
+            Today
+          </Button>
+        </Stack>
 
-      <div className="flex bg-slate-100 dark:bg-slate-700/50 p-1 rounded-lg">
+        <Typography 
+          variant="h4" 
+          sx={{ 
+            fontWeight: 900, 
+            color: 'text.primary', 
+            letterSpacing: '-0.04em',
+            whiteSpace: 'nowrap',
+            fontSize: { xs: '1.25rem', md: '1.75rem' },
+            transition: 'all 0.3s ease'
+          }}
+        >
+          {format(currentDate, 'MMMM')} <span style={{ color: theme.palette.text.secondary, fontWeight: 700, marginLeft: '8px', opacity: 0.6 }}>{format(currentDate, 'yyyy')}</span>
+        </Typography>
+      </Stack>
+
+      {/* RIGHT ZONE: Month Week Day segmented buttons */}
+      <Stack 
+        direction="row" 
+        spacing={0.5} 
+        sx={{ 
+          bgcolor: 'background.paper', 
+          p: 0.6, 
+          borderRadius: '14px', 
+          border: '1px solid',
+          borderColor: 'divider',
+          boxShadow: theme.palette.mode === 'dark' ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.04)',
+          transition: 'all 0.3s ease'
+        }}
+      >
         {['month', 'week', 'day'].map((v) => (
-          <button
+          <Button
             key={v}
             onClick={() => setView(v)}
-            className={`px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all duration-200 ${
-              view === v
-                ? 'bg-white dark:bg-slate-600 shadow-sm text-blue-600 dark:text-blue-400'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-            }`}
+            sx={{
+              textTransform: 'none',
+              px: 2.5,
+              py: 0.8,
+              borderRadius: '10px',
+              color: view === v ? 'text.primary' : 'text.secondary',
+              bgcolor: view === v ? (theme.palette.mode === 'dark' ? alpha(theme.palette.primary.main, 0.2) : alpha(theme.palette.primary.main, 0.08)) : 'transparent',
+              fontWeight: 800,
+              fontSize: '0.8rem',
+              minWidth: '80px',
+              '&:hover': { bgcolor: view === v ? alpha(theme.palette.primary.main, 0.15) : 'action.hover' },
+              transition: 'all 0.2s ease'
+            }}
           >
-            {v}
-          </button>
+            {v.charAt(0).toUpperCase() + v.slice(1)}
+          </Button>
         ))}
-      </div>
-    </div>
+      </Stack>
+    </Box>
   );
 }
 

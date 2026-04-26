@@ -1,43 +1,59 @@
 import React, { useState, useEffect } from 'react';
-
-const CATEGORIES = [
-  { id: 'work', label: 'Work', color: 'bg-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20', text: 'text-blue-700 dark:text-blue-400' },
-  { id: 'personal', label: 'Personal', color: 'bg-green-500', bg: 'bg-green-50 dark:bg-green-900/20', text: 'text-green-700 dark:text-green-400' },
-  { id: 'important', label: 'Important', color: 'bg-red-500', bg: 'bg-red-50 dark:bg-red-900/20', text: 'text-red-700 dark:text-red-400' },
-  { id: 'study', label: 'Study', color: 'bg-purple-500', bg: 'bg-purple-50 dark:bg-purple-900/20', text: 'text-purple-700 dark:text-purple-400' },
-];
+import { 
+  Dialog, 
+  DialogTitle, 
+  DialogContent, 
+  DialogActions, 
+  TextField, 
+  Button, 
+  Stack, 
+  Typography, 
+  IconButton, 
+  Box, 
+  alpha,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  useTheme
+} from '@mui/material';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 function EventModal({ isOpen, onClose, onSave, onDelete, initialData, defaultDate }) {
+  const theme = useTheme();
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const [duration, setDuration] = useState('60'); // Minutes
   const [category, setCategory] = useState('work');
+
+  const categories = [
+    { id: 'work', label: 'Work', color: theme.palette.primary.main },
+    { id: 'personal', label: 'Personal', color: '#AF52DE' },
+    { id: 'gym', label: 'Gym', color: theme.palette.success.main },
+    { id: 'study', label: 'Study', color: theme.palette.warning.main },
+    { id: 'health', label: 'Health', color: theme.palette.error.main },
+  ];
 
   useEffect(() => {
     if (isOpen) {
       if (initialData) {
         setTitle(initialData.title || '');
-        setDate(initialData.date || '');
-        setTime(initialData.time || '');
-        setDuration(initialData.duration?.toString() || '60');
-        setCategory(initialData.category || 'work');
+        setDate(initialData.event_date || initialData.date || '');
+        setTime(initialData.start_time || initialData.time || '');
+        setCategory(initialData.category?.toLowerCase() || 'work');
       } else {
         setTitle('');
         setDate(defaultDate || new Date().toISOString().split('T')[0]);
         const now = new Date();
         now.setMinutes(Math.ceil(now.getMinutes() / 30) * 30);
         setTime(now.toTimeString().slice(0, 5));
-        setDuration('60');
         setCategory('work');
       }
     }
   }, [isOpen, initialData, defaultDate]);
 
-  if (!isOpen) return null;
-
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!title.trim() || !date) return;
     
     onSave({
@@ -45,103 +61,136 @@ function EventModal({ isOpen, onClose, onSave, onDelete, initialData, defaultDat
       title: title.trim(),
       date,
       time,
-      duration: parseInt(duration),
-      category,
+      category: category.toUpperCase(),
       completed: initialData ? initialData.completed : false
     });
   };
 
-  const inputClass = "w-full px-3 py-2 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-slate-800 dark:text-slate-200 transition-colors";
-  const labelClass = "block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5";
-
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm animate-fade-in" onClick={onClose}></div>
-      <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-scale-in border border-slate-100 dark:border-slate-700">
-        
-        {/* Header */}
-        <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-slate-800 dark:text-white">
-            {initialData ? 'Edit Event' : 'Add Event'}
-          </h3>
-          <button onClick={onClose} className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-          </button>
-        </div>
+    <Dialog 
+      open={isOpen} 
+      onClose={onClose}
+      PaperProps={{ 
+        sx: { 
+          borderRadius: '24px', 
+          bgcolor: 'background.paper', 
+          border: '1px solid',
+          borderColor: 'divider', 
+          backgroundImage: 'none', 
+          minWidth: '400px' 
+        } 
+      }}
+    >
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 3, pt: 3 }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
+          {initialData ? 'Edit Task' : 'New Task'}
+        </Typography>
+        <IconButton onClick={onClose} sx={{ color: 'text.secondary' }}><CloseRoundedIcon /></IconButton>
+      </DialogTitle>
+      
+      <DialogContent sx={{ px: 3, pb: 2 }}>
+        <Stack spacing={3} sx={{ mt: 1 }}>
+          <TextField
+            fullWidth
+            placeholder="Event Title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            variant="outlined"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                color: 'text.primary',
+                bgcolor: alpha(theme.palette.text.primary, 0.02),
+                borderRadius: '12px',
+                '& fieldset': { borderColor: 'divider' },
+                '&:hover fieldset': { borderColor: alpha(theme.palette.primary.main, 0.5) },
+                '&.Mui-focused fieldset': { borderColor: 'primary.main' },
+              }
+            }}
+          />
 
-        {/* Body */}
-        <form onSubmit={handleSubmit} className="p-5 space-y-4">
-          <div>
-            <label className={labelClass}>Event Title</label>
-            <input autoFocus type="text" placeholder="Add title..." value={title} onChange={e => setTitle(e.target.value)} className={inputClass} required />
-          </div>
+          <Stack direction="row" spacing={2}>
+            <TextField
+              type="date"
+              fullWidth
+              value={date}
+              onChange={e => setDate(e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  color: 'text.primary',
+                  bgcolor: alpha(theme.palette.text.primary, 0.02),
+                  borderRadius: '12px',
+                  '& fieldset': { borderColor: 'divider' },
+                }
+              }}
+            />
+            <TextField
+              type="time"
+              fullWidth
+              value={time}
+              onChange={e => setTime(e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  color: 'text.primary',
+                  bgcolor: alpha(theme.palette.text.primary, 0.02),
+                  borderRadius: '12px',
+                  '& fieldset': { borderColor: 'divider' },
+                }
+              }}
+            />
+          </Stack>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Date</label>
-              <input type="date" value={date} onChange={e => setDate(e.target.value)} className={inputClass} required />
-            </div>
-            <div>
-              <label className={labelClass}>Time</label>
-              <input type="time" value={time} onChange={e => setTime(e.target.value)} className={inputClass} />
-            </div>
-          </div>
-
-          <div>
-            <label className={labelClass}>Duration</label>
-            <select value={duration} onChange={e => setDuration(e.target.value)} className={inputClass}>
-              <option value="15">15 minutes</option>
-              <option value="30">30 minutes</option>
-              <option value="45">45 minutes</option>
-              <option value="60">1 hour</option>
-              <option value="90">1.5 hours</option>
-              <option value="120">2 hours</option>
-              <option value="240">4 hours</option>
-              <option value="1440">All day</option>
-            </select>
-          </div>
-
-          <div>
-            <label className={labelClass}>Category</label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {CATEGORIES.map(cat => (
-                <button
+          <Box>
+            <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700, mb: 1, display: 'block' }}>CATEGORY</Typography>
+            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+              {categories.map(cat => (
+                <Box
                   key={cat.id}
-                  type="button"
                   onClick={() => setCategory(cat.id)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                    category === cat.id 
-                      ? 'bg-slate-100 dark:bg-slate-700 ring-2 ring-blue-500' 
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-700/50'
-                  }`}
+                  sx={{
+                    px: 2, py: 1, borderRadius: '10px', border: '1px solid',
+                    borderColor: category === cat.id ? cat.color : 'divider',
+                    bgcolor: category === cat.id ? alpha(cat.color, 0.1) : 'transparent',
+                    cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 1,
+                    transition: 'all 0.2s ease',
+                    '&:hover': { bgcolor: alpha(cat.color, 0.05) }
+                  }}
                 >
-                  <span className={`w-3 h-3 rounded-full ${cat.color}`}></span>
-                  <span className="text-slate-700 dark:text-slate-300">{cat.label}</span>
-                </button>
+                  <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: cat.color }} />
+                  <Typography sx={{ fontSize: '12px', fontWeight: 700, color: category === cat.id ? 'text.primary' : 'text.secondary' }}>
+                    {cat.label}
+                  </Typography>
+                </Box>
               ))}
-            </div>
-          </div>
+            </Stack>
+          </Box>
+        </Stack>
+      </DialogContent>
 
-          {/* Footer Buttons */}
-          <div className="flex items-center justify-between pt-4 mt-2 border-t border-slate-100 dark:border-slate-700">
-            {initialData ? (
-              <button type="button" onClick={() => onDelete(initialData.id)} className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
-                Delete
-              </button>
-            ) : <div></div>}
-            
-            <div className="flex items-center gap-2">
-              <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-                Cancel
-              </button>
-              <button type="submit" className="px-5 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors">
-                Save
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+      <DialogActions sx={{ px: 3, pb: 3, pt: 2, justifyContent: 'space-between' }}>
+        {initialData ? (
+          <Button 
+            onClick={() => onDelete(initialData.id)} 
+            sx={{ color: 'error.main', fontWeight: 700, textTransform: 'none' }}
+          >
+            Delete
+          </Button>
+        ) : <Box />}
+        
+        <Stack direction="row" spacing={2}>
+          <Button onClick={onClose} sx={{ color: 'text.secondary', fontWeight: 700, textTransform: 'none' }}>Cancel</Button>
+          <Button 
+            onClick={handleSubmit} 
+            variant="contained" 
+            disableElevation
+            sx={{ 
+              borderRadius: '12px', px: 4, fontWeight: 800, textTransform: 'none',
+            }}
+          >
+            Save
+          </Button>
+        </Stack>
+      </DialogActions>
+    </Dialog>
   );
 }
 
