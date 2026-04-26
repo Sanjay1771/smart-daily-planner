@@ -1,13 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Base Styles ── */
+:root {
+  color-scheme: light dark;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #F8FAFC;
+  color: #0F172A;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode body */
+.dark body,
+html.dark body {
+  background-color: #0F172A;
+  color: #F8FAFC;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* ── Premium Scrollbar ── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E2E8F0;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #CBD5E1;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ── Global Animation System ── */
+/* Applying smooth transitions globally with premium cubic-bezier */
+* {
+  transition: 
+    background-color 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Checkbox soft pop */
+.MuiCheckbox-root {
+  transition: transform 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+.MuiCheckbox-root.Mui-checked {
+  transform: scale(1.1);
+}
+
+/* Page transitions wrapper */
+.page-transition-container {
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Notification pulse */
+.notification-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 113, 227, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 113, 227, 0); }
+}
+
+/* Exclude certain items from transitions if needed */
+.no-transition, .no-transition * {
+  transition: none !important;
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* MUI Custom Scrollbar for Paper/Containers */
+.mui-scroll-container::-webkit-scrollbar {
+  width: 4px;
 }
