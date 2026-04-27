@@ -45,9 +45,9 @@ function Profile({ user }) {
           <Box sx={{ position: 'relative' }}>
             <Avatar 
               sx={{ 
-                width: 120, 
-                height: 120, 
-                fontSize: '2.5rem', 
+                width: { xs: 80, md: 120 }, 
+                height: { xs: 80, md: 120 }, 
+                fontSize: { xs: '1.5rem', md: '2.5rem' }, 
                 fontWeight: 900,
                 bgcolor: 'primary.main',
                 color: 'white',
@@ -76,7 +76,7 @@ function Profile({ user }) {
           </Box>
           <Box sx={{ flex: 1, textAlign: { xs: 'center', md: 'left' } }}>
             <Stack direction="row" alignItems="center" spacing={2} justifyContent={{ xs: 'center', md: 'flex-start' }} mb={1}>
-              <Typography variant="h4" sx={{ fontWeight: 900, color: 'text.primary', letterSpacing: '-0.04em' }}>
+              <Typography variant="h4" sx={{ fontWeight: 900, color: 'text.primary', letterSpacing: '-0.04em', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>
                 {user?.name}
               </Typography>
               <Chip label="PREMIUM" size="small" sx={{ height: 20, fontWeight: 900, bgcolor: 'primary.main', color: 'white', fontSize: '0.65rem' }} />
@@ -127,10 +127,12 @@ function Profile({ user }) {
             ].map((item, idx) => (
               <React.Fragment key={item.label}>
                 <Box sx={{ 
-                  p: 3, 
+                  p: { xs: 2, md: 3 }, 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: 1,
                   '&:hover': { bgcolor: alpha(muiTheme.palette.text.primary, 0.01) }
                 }}>
                   <Stack direction="row" alignItems="center" spacing={3}>

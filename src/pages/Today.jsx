@@ -233,7 +233,7 @@ function Today({ user }) {
       
       {/* --- HERO SECTION MATCHED TO DASHBOARD --- */}
       <Box sx={{ 
-        pt: 8, pb: 10, mb: -4,
+        pt: { xs: 4, md: 8 }, pb: { xs: 6, md: 10 }, mb: -4,
         bgcolor: 'background.paper',
         borderBottom: '1px solid',
         borderColor: 'divider'
@@ -241,8 +241,8 @@ function Today({ user }) {
         <Container maxWidth={false} sx={{ px: { xs: 2, md: 6 } }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 2 }}>
             <Box>
-              <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 1.5 }}>
-                <Typography variant="h2" sx={{ fontWeight: 900, letterSpacing: '-0.04em', fontSize: { xs: '2.5rem', md: '4rem' } }}>Today</Typography>
+              <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 1.5, flexWrap: 'wrap' }}>
+                <Typography variant="h2" sx={{ fontWeight: 900, letterSpacing: '-0.04em', fontSize: { xs: '2rem', sm: '2.5rem', md: '4rem' } }}>Today</Typography>
                 <Chip 
                   label={`${stats.progress}% Completed`} 
                   size="small" 
@@ -270,7 +270,7 @@ function Today({ user }) {
       <Container maxWidth={false} sx={{ px: { xs: 2, md: 6 } }}>
         
         {/* --- ROW 2: SUMMARY CARDS --- */}
-        <Grid container spacing={3} sx={{ mb: 6 }}>
+        <Grid container spacing={{ xs: 2, md: 3 }} sx={{ mb: { xs: 3, md: 6 } }}>
           {[
             { label: 'Total Today', val: stats.total, icon: <RocketLaunchRoundedIcon />, color: theme.palette.primary.main },
             { label: 'Pending', val: stats.pending, icon: <PendingActionsRoundedIcon />, color: theme.palette.warning.main },
@@ -283,8 +283,8 @@ function Today({ user }) {
                 whileHover={{ translateY: -3, backgroundColor: theme.palette.action.hover }}
                 transition={{ duration: 0.25 }}
                 sx={{
-                  p: 3,
-                  borderRadius: '20px',
+                  p: { xs: 2, md: 3 },
+                  borderRadius: { xs: '16px', md: '20px' },
                   bgcolor: 'background.paper',
                   border: '1px solid',
                   borderColor: 'divider',

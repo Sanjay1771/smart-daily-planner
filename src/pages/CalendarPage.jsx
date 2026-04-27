@@ -54,19 +54,27 @@ function CalendarPage({ user }) {
   );
 
   return (
-    <Container maxWidth="xl" sx={{ py: 6 }}>
-      <Stack spacing={4}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Box sx={{ p: 1.5, bgcolor: 'primary.main', color: 'white', borderRadius: '12px', display: 'flex' }}>
+    <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 }, px: { xs: 1.5, md: 3 } }}>
+      <Stack spacing={3}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', pt: { xs: 0, md: 1 } }}>
+          <Box sx={{ p: 1.5, bgcolor: 'primary.main', color: 'white', borderRadius: '14px', display: 'flex' }}>
              <CalendarMonthRoundedIcon />
           </Box>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: '-0.04em' }}>Master Schedule</Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>Visual workspace timeline and event management.</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: '-0.04em', fontSize: { xs: '1.5rem', md: '1.75rem' } }}>Master Schedule</Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: { xs: '0.8rem', md: '0.85rem' } }}>Visual workspace timeline and event management.</Typography>
           </Box>
         </Box>
 
-        <Paper elevation={0} sx={{ p: 1, borderRadius: '24px', border: '1px solid', borderColor: 'divider', overflow: 'hidden' }}>
+        <Paper elevation={0} sx={{ 
+          p: { xs: 1, md: 1.5 }, 
+          borderRadius: 0, 
+          border: 'none', 
+          overflow: 'visible',
+          bgcolor: 'transparent',
+          backgroundImage: 'none',
+          boxShadow: 'none'
+        }}>
           <CalendarModule 
             tasks={tasks} 
             setTasks={setTasks} 

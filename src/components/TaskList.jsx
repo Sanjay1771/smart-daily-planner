@@ -51,7 +51,7 @@ function TaskList({ tasks, toggleComplete, deleteTask, onEdit, view }) {
             key={task.id}
             elevation={0}
             sx={{
-              p: 3,
+              p: { xs: 2, md: 3 },
               display: 'flex',
               alignItems: 'center',
               gap: 2,
@@ -86,7 +86,7 @@ function TaskList({ tasks, toggleComplete, deleteTask, onEdit, view }) {
               >
                 {task.title}
               </Typography>
-              <Stack direction="row" spacing={2} alignItems="center" mt={0.5}>
+              <Stack direction="row" spacing={2} alignItems="center" mt={0.5} sx={{ flexWrap: 'wrap', gap: 0.5 }}>
                 <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600 }}>
                   {task.time} · {new Date(task.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                 </Typography>

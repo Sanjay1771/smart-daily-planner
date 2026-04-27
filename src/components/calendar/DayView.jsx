@@ -10,7 +10,7 @@ function DayView({ currentDate, tasks, onDateClick, onEventClick }) {
 
   return (
     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', bgcolor: 'background.default', overflowY: 'auto', transition: 'all 0.3s ease' }}>
-      <Box sx={{ p: 3, borderBottom: '1px solid', borderColor: 'divider', bgcolor: 'background.paper', transition: 'all 0.3s ease' }}>
+      <Box sx={{ p: 3, borderBottom: '1px solid rgba(255,255,255,0.06)', bgcolor: 'background.paper', transition: 'all 0.3s ease' }}>
         <Typography variant="h5" sx={{ fontWeight: 900, color: 'text.primary', letterSpacing: '-0.02em', transition: 'all 0.3s ease' }}>
           {format(currentDate, 'EEEE, MMMM d')}
         </Typography>
@@ -20,7 +20,7 @@ function DayView({ currentDate, tasks, onDateClick, onEventClick }) {
         {hours.map((hour) => {
           const hourTasks = dayTasks.filter(t => t.start_time?.startsWith(hour.toString().padStart(2, '0')));
           return (
-            <Stack key={hour} direction="row" spacing={3} sx={{ minHeight: '80px', borderBottom: '1px solid', borderColor: 'divider', transition: 'all 0.3s ease' }}>
+            <Stack key={hour} direction="row" spacing={3} sx={{ minHeight: '80px', borderBottom: '1px solid rgba(255,255,255,0.04)', transition: 'all 0.3s ease' }}>
               <Typography sx={{ width: '60px', pt: 1, fontSize: '12px', fontWeight: 800, color: 'text.secondary', opacity: 0.6, transition: 'all 0.3s ease' }}>
                 {format(new Date().setHours(hour, 0), 'h a')}
               </Typography>
@@ -32,8 +32,7 @@ function DayView({ currentDate, tasks, onDateClick, onEventClick }) {
                     sx={{
                       px: 2.5, py: 1.5, borderRadius: '14px', 
                       bgcolor: 'background.paper', 
-                      border: '1px solid', 
-                      borderColor: 'divider',
+                      border: '1px solid rgba(255,255,255,0.06)',
                       boxShadow: theme.palette.mode === 'light' ? '0 2px 10px rgba(0,0,0,0.03)' : '0 4px 20px rgba(0,0,0,0.2)',
                       cursor: 'pointer', transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)', 
                       '&:hover': { 

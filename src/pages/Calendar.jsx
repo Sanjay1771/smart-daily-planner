@@ -23,6 +23,7 @@ import {
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -71,10 +72,11 @@ const Calendar = ({ user }) => {
   
   const glassCard = {
     backdropFilter: 'blur(24px)',
-    backgroundColor: alpha(theme.palette.background.paper, 0.6),
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: '24px',
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(14,14,18,0.9)' : alpha(theme.palette.background.paper, 0.6),
+    border: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.03)' : `1px solid ${alpha(theme.palette.divider, 0.3)}`,
+    borderRadius: '16px',
     backgroundImage: 'none',
+    boxShadow: theme.palette.mode === 'light' ? '0 4px 24px rgba(0,0,0,0.04)' : '0 8px 40px rgba(0,0,0,0.5)',
   };
 
   const [tasks, setTasks] = useState([]);
@@ -198,23 +200,23 @@ const Calendar = ({ user }) => {
   };
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', color: 'text.primary', p: { xs: 1, md: 2 }, fontFamily: '"SF Pro Display", "Inter", sans-serif' }}>
-      <Container maxWidth="xl" sx={{ height: 'calc(100vh - 64px)' }}>
-        <Grid container spacing={4} sx={{ height: '100%' }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', color: 'text.primary', p: { xs: 1.5, md: 3 }, fontFamily: '"SF Pro Display", "Inter", sans-serif' }}>
+      <Container maxWidth="xl" sx={{ height: { xs: 'auto', md: 'calc(100vh - 64px)' }, py: { xs: 1, md: 2 } }}>
+        <Grid container spacing={{ xs: 2, md: 3 }} sx={{ height: { xs: 'auto', md: '100%' } }}>
           
           {/* --- LEFT SIDEBAR (20%) --- */}
           <Grid item xs={12} md={2.4} sx={{ display: { xs: 'none', md: 'block' } }}>
-            <Stack spacing={4}>
-              <Box sx={{ px: 1 }}>
-                <Typography variant="h5" sx={{ fontWeight: 900, color: 'primary.main', letterSpacing: '-0.03em' }}>PlanPro</Typography>
-                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800, letterSpacing: '0.05em' }}>SMART DAILY PLANNER</Typography>
+            <Stack spacing={3} sx={{ pt: 1 }}>
+              <Box sx={{ px: 0.5 }}>
+                <Typography variant="h6" sx={{ fontWeight: 900, color: 'primary.main', letterSpacing: '-0.03em' }}>PlanPro</Typography>
+                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800, letterSpacing: '0.05em', fontSize: '0.6rem' }}>SMART DAILY PLANNER</Typography>
               </Box>
 
-              <Box sx={{ ...glassCard, p: 2.5 }}>
-                <Typography variant="caption" sx={{ fontWeight: 900, color: 'text.secondary', letterSpacing: '0.1em', mb: 2, display: 'block' }}>CALENDAR</Typography>
+              <Box sx={{ ...glassCard, p: 2.5, borderRadius: '20px' }}>
+                <Typography variant="caption" sx={{ fontWeight: 900, color: 'text.secondary', letterSpacing: '0.08em', mb: 1.5, display: 'block', fontSize: '0.6rem' }}>CALENDAR</Typography>
                 <Grid container spacing={0.5}>
                   {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d) => (
-                    <Grid item xs={1.71} key={d}><Typography align="center" sx={{ fontSize: '10px', fontWeight: 900, color: alpha(theme.palette.text.secondary, 0.6) }}>{d}</Typography></Grid>
+                    <Grid item xs={1.71} key={d}><Typography align="center" sx={{ fontSize: '9px', fontWeight: 900, color: alpha(theme.palette.text.secondary, 0.5) }}>{d}</Typography></Grid>
                   ))}
                   {monthDays.slice(0, 42).map((day, i) => {
                     const isTdy = isToday(day);
@@ -225,9 +227,10 @@ const Calendar = ({ user }) => {
                         <Box
                           onClick={() => { setSelectedDate(day); setViewDate(day); }}
                           sx={{
-                            height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', borderRadius: '50%', fontSize: '11px', fontWeight: 800,
-                            bgcolor: isTdy ? 'primary.main' : (isSel ? alpha(theme.palette.primary.main, 0.2) : 'transparent'),
+                            height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', borderRadius: '50%', fontSize: '10px', fontWeight: 800,
+                            bgcolor: isTdy ? 'primary.main' : (isSel ? alpha(theme.palette.primary.main, 0.15) : 'transparent'),
                             color: isTdy ? 'white' : (isCurr ? 'text.primary' : alpha(theme.palette.text.primary, 0.2)),
+                            transition: 'all 0.15s ease',
                             '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.1) }
                           }}
                         >
@@ -245,8 +248,9 @@ const Calendar = ({ user }) => {
                 startIcon={<TodayRoundedIcon />}
                 onClick={goToToday}
                 sx={{ 
-                  borderRadius: '16px', bgcolor: alpha(theme.palette.primary.main, 0.1), color: 'primary.main', fontWeight: 800, textTransform: 'none', py: 1.8,
-                  '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.2) }
+                  borderRadius: '14px', bgcolor: alpha(theme.palette.primary.main, 0.08), color: 'primary.main', fontWeight: 800, textTransform: 'none', py: 1.5,
+                  boxShadow: 'none',
+                  '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.15), boxShadow: 'none' }
                 }}
               >
                 Go to Today
@@ -256,36 +260,38 @@ const Calendar = ({ user }) => {
 
           {/* --- CENTER MAIN PANEL (55%) --- */}
           <Grid item xs={12} md={6.6}>
-            <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              {/* Toolbar Refined */}
-              <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4} sx={{ px: 1 }}>
-                <Stack direction="row" alignItems="center" spacing={2}>
-                  <Stack direction="row" spacing={1} sx={{ bgcolor: 'background.paper', p: 0.8, borderRadius: '14px', border: `1px solid ${theme.palette.divider}` }}>
-                    <IconButton size="small" onClick={() => setViewDate(subMonths(viewDate, 1))} sx={{ color: 'text.primary' }}><ChevronLeftRoundedIcon fontSize="small" /></IconButton>
-                    <IconButton size="small" onClick={() => setViewDate(addMonths(viewDate, 1))} sx={{ color: 'text.primary' }}><ChevronRightRoundedIcon fontSize="small" /></IconButton>
+            <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', pt: { xs: 0.5, md: 1 } }}>
+              {/* Toolbar — Perfectly Aligned */}
+              <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: { xs: 2, md: 3 }, px: 0.5, flexWrap: 'wrap', gap: 1.5 }}>
+                {/* Left: Nav + Today + Month Title */}
+                <Stack direction="row" alignItems="center" spacing={1.5}>
+                  <Stack direction="row" spacing={0.5} sx={{ bgcolor: 'background.paper', p: 0.6, borderRadius: '12px', border: `1px solid ${theme.palette.divider}` }}>
+                    <IconButton size="small" onClick={() => setViewDate(subMonths(viewDate, 1))} sx={{ color: 'text.primary', '&:hover': { bgcolor: 'action.hover' } }}><ChevronLeftRoundedIcon sx={{ fontSize: 20 }} /></IconButton>
+                    <IconButton size="small" onClick={() => setViewDate(addMonths(viewDate, 1))} sx={{ color: 'text.primary', '&:hover': { bgcolor: 'action.hover' } }}><ChevronRightRoundedIcon sx={{ fontSize: 20 }} /></IconButton>
                   </Stack>
                   <Button 
                     onClick={goToToday}
-                    sx={{ color: 'text.primary', fontWeight: 700, textTransform: 'none', borderRadius: '12px', px: 2.5, height: 44, border: `1px solid ${theme.palette.divider}` }}
+                    sx={{ color: 'text.primary', fontWeight: 700, textTransform: 'none', borderRadius: '10px', px: { xs: 1.5, md: 2 }, height: 36, fontSize: '0.8rem', border: `1px solid ${theme.palette.divider}`, '&:hover': { bgcolor: 'action.hover' } }}
                   >
                     Today
                   </Button>
+                  <Typography sx={{ fontWeight: 900, letterSpacing: '-0.03em', color: 'text.primary', fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.5rem' }, whiteSpace: 'nowrap' }}>
+                    {format(viewDate, 'MMMM')} <span style={{ color: alpha(theme.palette.text.primary, 0.35), fontWeight: 700 }}>{format(viewDate, 'yyyy')}</span>
+                  </Typography>
                 </Stack>
 
-                <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: '-0.04em', color: 'text.primary' }}>
-                  {format(viewDate, 'MMMM')} <span style={{ color: alpha(theme.palette.text.primary, 0.4) }}>{format(viewDate, 'yyyy')}</span>
-                </Typography>
-
-                <Stack direction="row" spacing={0.5} sx={{ bgcolor: 'background.paper', p: 0.8, borderRadius: '16px', border: `1px solid ${theme.palette.divider}` }}>
+                {/* Right: View Mode Tabs */}
+                <Stack direction="row" spacing={0.5} sx={{ bgcolor: 'background.paper', p: 0.5, borderRadius: '12px', border: `1px solid ${theme.palette.divider}` }}>
                   {['Month', 'Week', 'Day'].map((mode) => (
                     <Button
                       key={mode}
                       onClick={() => setViewMode(mode)}
                       sx={{
-                        textTransform: 'none', px: 2.5, py: 0.8, borderRadius: '10px', fontWeight: 800, fontSize: '0.85rem',
-                        color: viewMode === mode ? 'text.primary' : 'text.secondary',
-                        bgcolor: viewMode === mode ? alpha(theme.palette.primary.main, 0.15) : 'transparent',
-                        '&:hover': { bgcolor: viewMode === mode ? alpha(theme.palette.primary.main, 0.2) : alpha(theme.palette.text.secondary, 0.05) }
+                        textTransform: 'none', px: { xs: 1.5, md: 2 }, py: 0.6, borderRadius: '8px', fontWeight: 800, fontSize: { xs: '0.75rem', sm: '0.8rem' },
+                        minWidth: { xs: '48px', md: '64px' },
+                        color: viewMode === mode ? 'primary.main' : 'text.secondary',
+                        bgcolor: viewMode === mode ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
+                        '&:hover': { bgcolor: viewMode === mode ? alpha(theme.palette.primary.main, 0.15) : 'action.hover' }
                       }}
                     >
                       {mode}
@@ -294,13 +300,17 @@ const Calendar = ({ user }) => {
                 </Stack>
               </Stack>
 
-              {/* Grid Refined */}
+              {/* Calendar Grid */}
               <Box sx={{ 
-                flex: 1, display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridAutoRows: '1fr', borderRadius: '32px', overflow: 'hidden', border: `1px solid ${theme.palette.divider}`, bgcolor: 'background.paper'
+                flex: 1, display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridAutoRows: '1fr', 
+                borderRadius: { xs: '12px', md: '16px' }, overflow: 'hidden', 
+                border: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.03)' : '1px solid rgba(0,0,0,0.05)', 
+                bgcolor: theme.palette.mode === 'dark' ? 'rgba(10,10,14,1)' : 'background.paper',
+                boxShadow: theme.palette.mode === 'dark' ? '0 8px 40px rgba(0,0,0,0.5)' : '0 4px 24px rgba(0,0,0,0.04)'
               }}>
                 {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((day) => (
-                  <Box key={day} sx={{ py: 2.5, borderBottom: `1px solid ${theme.palette.divider}`, bgcolor: alpha(theme.palette.background.default, 0.4) }}>
-                    <Typography align="center" sx={{ fontSize: '11px', fontWeight: 900, color: 'text.secondary', letterSpacing: '0.12em' }}>{day}</Typography>
+                  <Box key={day} sx={{ py: 2, borderBottom: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.06)' : `1px solid ${theme.palette.divider}`, bgcolor: theme.palette.mode === 'dark' ? 'rgba(16,16,20,0.9)' : alpha(theme.palette.background.default, 0.3) }}>
+                    <Typography align="center" sx={{ fontSize: '10px', fontWeight: 900, color: 'text.secondary', letterSpacing: '0.1em' }}>{day}</Typography>
                   </Box>
                 ))}
                 {monthDays.map((day, idx) => {
@@ -316,8 +326,15 @@ const Calendar = ({ user }) => {
                       whileHover={{ bgcolor: alpha(theme.palette.text.primary, 0.02) }}
                       onClick={() => setSelectedDate(day)}
                       sx={{
-                        borderRight: `1px solid ${theme.palette.divider}`, borderBottom: `1px solid ${theme.palette.divider}`, p: 1.5, cursor: 'pointer', position: 'relative',
-                        bgcolor: isSel ? alpha(theme.palette.primary.main, 0.06) : 'transparent', opacity: isCurr ? 1 : 0.25,
+                        borderRight: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.04)' : `1px solid ${theme.palette.divider}`, 
+                        borderBottom: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.04)' : `1px solid ${theme.palette.divider}`, 
+                        p: 1.5, cursor: 'pointer', position: 'relative',
+                        bgcolor: isSel 
+                          ? alpha(theme.palette.primary.main, 0.08) 
+                          : (isCurr 
+                            ? (theme.palette.mode === 'dark' ? 'rgba(12,12,16,1)' : 'transparent') 
+                            : (theme.palette.mode === 'dark' ? 'rgba(8,8,10,1)' : 'transparent')), 
+                        opacity: isCurr ? 1 : 0.3,
                         boxShadow: isSel ? `inset 0 0 0 2px ${theme.palette.primary.main}` : 'none', zIndex: isSel ? 1 : 0, transition: 'all 0.2s ease',
                       }}
                     >
@@ -348,69 +365,128 @@ const Calendar = ({ user }) => {
 
           {/* --- RIGHT SIDEBAR (30%) --- */}
           <Grid item xs={12} md={3}>
-            <Stack spacing={3} sx={{ height: '100%' }}>
-              <Card sx={{ ...glassCard, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <Box sx={{ p: 4, pb: 0 }}>
-                  <Typography variant="h5" sx={{ fontWeight: 900, mb: 0.5, letterSpacing: '-0.02em' }}>{format(selectedDate, 'EEEE')}</Typography>
-                  <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 800 }}>{format(selectedDate, 'MMMM d, yyyy')}</Typography>
-                  <Typography variant="caption" sx={{ color: 'primary.main', fontWeight: 900, mt: 1.5, display: 'block' }}>SELECTED DATE</Typography>
+            <Stack spacing={2.5} sx={{ height: '100%', pt: { xs: 0, md: 1 } }}>
+              <Card sx={{ ...glassCard, flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                {/* Date Header */}
+                <Box sx={{ px: 3, pt: 3, pb: 2 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 1.2 }}>{format(selectedDate, 'EEEE')}</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 700, mt: 0.5 }}>{format(selectedDate, 'MMMM d, yyyy')}</Typography>
+                  <Typography variant="caption" sx={{ color: 'primary.main', fontWeight: 900, mt: 1, display: 'block', letterSpacing: '0.08em', fontSize: '0.6rem' }}>SELECTED DATE</Typography>
                 </Box>
 
-                <Box sx={{ flex: 1, overflowY: 'auto', px: 3, py: 4 }}>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 900, fontSize: '0.8rem', color: 'text.secondary' }}>TASKS</Typography>
+                {/* Tasks Section */}
+                <Box sx={{ flex: 1, overflowY: 'auto', px: 3, pb: 2 }}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+                    <Typography variant="caption" sx={{ fontWeight: 900, fontSize: '0.7rem', color: 'text.secondary', letterSpacing: '0.08em' }}>TASKS</Typography>
                     <Button 
-                      startIcon={<AddRoundedIcon sx={{ fontSize: 16 }} />} 
+                      startIcon={<AddRoundedIcon sx={{ fontSize: 14 }} />} 
                       onClick={() => setShowAddModal(true)}
-                      sx={{ textTransform: 'none', color: 'primary.main', fontWeight: 800, fontSize: '0.8rem', bgcolor: alpha(theme.palette.primary.main, 0.1), borderRadius: '12px', px: 2 }}
+                      sx={{ textTransform: 'none', color: 'primary.main', fontWeight: 800, fontSize: '0.75rem', bgcolor: alpha(theme.palette.primary.main, 0.08), borderRadius: '10px', px: 1.5, py: 0.4, minHeight: 30, '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.15) } }}
                     >
                       Add
                     </Button>
                   </Stack>
 
-                  <Stack spacing={2}>
+                  <Stack spacing={1.5}>
                     {selectedTasks.length > 0 ? (
                       selectedTasks.map((task) => (
-                        <Box key={task.id} sx={{ p: 2, borderRadius: '18px', bgcolor: alpha(theme.palette.text.primary, 0.03), border: `1px solid ${theme.palette.divider}`, opacity: task.completed ? 0.6 : 1 }}>
-                          <Stack direction="row" spacing={2} alignItems="center">
-                            <Checkbox checked={task.completed} onChange={() => toggleComplete(task.id, task.completed)} sx={{ p: 0, color: 'text.secondary', '&.Mui-checked': { color: theme.palette.success.main } }} />
-                            <Box sx={{ flex: 1 }}>
-                              <Typography sx={{ fontWeight: 800, fontSize: '0.9rem', textDecoration: task.completed ? 'line-through' : 'none' }}>{task.title}</Typography>
-                              <Stack direction="row" spacing={1.5} alignItems="center" mt={0.5}>
-                                <AccessTimeRoundedIcon sx={{ fontSize: 12, color: 'text.secondary' }} />
-                                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700 }}>{task.start_time || 'All Day'}</Typography>
-                                <Box sx={{ px: 0.8, py: 0.2, borderRadius: '4px', bgcolor: alpha(getCategoryColor(theme, task.category), 0.15), color: getCategoryColor(theme, task.category), fontSize: '8px', fontWeight: 900, textTransform: 'uppercase' }}>{task.category}</Box>
+                        <Box key={task.id} sx={{ 
+                          p: 1.5, borderRadius: '12px', 
+                          bgcolor: alpha(theme.palette.text.primary, 0.02), 
+                          border: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.04)' : `1px solid ${theme.palette.divider}`, 
+                          opacity: task.completed ? 0.5 : 1,
+                          transition: 'all 0.2s ease',
+                          '&:hover': { borderColor: alpha(theme.palette.primary.main, 0.2), bgcolor: alpha(theme.palette.primary.main, 0.02) }
+                        }}>
+                          <Stack direction="row" spacing={1} alignItems="center">
+                            {/* Checkbox - left */}
+                            <Checkbox 
+                              checked={task.completed} 
+                              onChange={() => toggleComplete(task.id, task.completed)} 
+                              sx={{ p: 0, color: 'text.disabled', '&.Mui-checked': { color: theme.palette.success.main } }} 
+                              size="small"
+                            />
+                            {/* Title + Time - center */}
+                            <Box sx={{ flex: 1, minWidth: 0 }}>
+                              <Typography noWrap sx={{ fontWeight: 800, fontSize: '0.82rem', textDecoration: task.completed ? 'line-through' : 'none', lineHeight: 1.3 }}>{task.title}</Typography>
+                              <Stack direction="row" spacing={0.8} alignItems="center" sx={{ mt: 0.4 }}>
+                                <AccessTimeRoundedIcon sx={{ fontSize: 10, color: 'text.disabled' }} />
+                                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700, fontSize: '0.65rem' }}>{task.start_time || 'All Day'}</Typography>
                               </Stack>
                             </Box>
-                            <IconButton onClick={() => deleteTask(task.id)} size="small" sx={{ color: alpha(theme.palette.error.main, 0.4), '&:hover': { color: theme.palette.error.main } }}><DeleteOutlineRoundedIcon fontSize="small" /></IconButton>
+                            {/* Category badge */}
+                            <Box sx={{ 
+                              px: 0.6, py: 0.1, borderRadius: '4px', flexShrink: 0,
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              bgcolor: alpha(getCategoryColor(theme, task.category), 0.08), 
+                              color: getCategoryColor(theme, task.category), 
+                              fontSize: '0.45rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.04em', lineHeight: 1
+                            }}>
+                              {task.category}
+                            </Box>
+                            {/* Edit icon */}
+                            <IconButton 
+                              onClick={() => setShowAddModal(true)} 
+                              size="small" 
+                              sx={{ color: 'text.disabled', p: 0.4, transition: 'all 0.2s ease', '&:hover': { color: theme.palette.primary.main, bgcolor: alpha(theme.palette.primary.main, 0.08) } }}
+                            >
+                              <EditRoundedIcon sx={{ fontSize: 15 }} />
+                            </IconButton>
+                            {/* Delete icon */}
+                            <IconButton 
+                              onClick={() => deleteTask(task.id)} 
+                              size="small" 
+                              sx={{ color: 'text.disabled', p: 0.4, transition: 'all 0.2s ease', '&:hover': { color: theme.palette.error.main, bgcolor: alpha(theme.palette.error.main, 0.08) } }}
+                            >
+                              <DeleteOutlineRoundedIcon sx={{ fontSize: 15 }} />
+                            </IconButton>
                           </Stack>
                         </Box>
                       ))
                     ) : (
-                      <Box sx={{ textAlign: 'center', py: 6, opacity: 0.2 }}><Typography variant="body2" sx={{ fontWeight: 800 }}>No tasks scheduled</Typography></Box>
+                      <Box sx={{ textAlign: 'center', py: 5, opacity: 0.3 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.8rem' }}>No tasks scheduled</Typography>
+                      </Box>
                     )}
                   </Stack>
                 </Box>
 
-                {/* Rearranged Stats & Quote into Right Sidebar */}
-                <Box sx={{ p: 3, pt: 0 }}>
-                  <Card sx={{ p: 2, borderRadius: '18px', bgcolor: alpha(theme.palette.text.primary, 0.03), border: `1px solid ${theme.palette.divider}`, mb: 2 }}>
-                    <Stack direction="row" justifyContent="space-around">
-                      <Box sx={{ textAlign: 'center' }}><Typography variant="body2" sx={{ fontWeight: 900 }}>{stats.total}</Typography><Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800, fontSize: '0.65rem' }}>TOTAL</Typography></Box>
-                      <Box sx={{ textAlign: 'center' }}><Typography variant="body2" sx={{ fontWeight: 900, color: theme.palette.success.main }}>{stats.completed}</Typography><Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800, fontSize: '0.65rem' }}>DONE</Typography></Box>
-                      <Box sx={{ textAlign: 'center' }}><Typography variant="body2" sx={{ fontWeight: 900, color: theme.palette.warning.main }}>{stats.pending}</Typography><Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800, fontSize: '0.65rem' }}>PENDING</Typography></Box>
-                    </Stack>
-                  </Card>
-
+                {/* Stats Card — 3 Equal Columns */}
+                <Box sx={{ px: 3, pb: 2 }}>
                   <Box sx={{ 
-                    p: 2, borderRadius: '18px', 
-                    background: theme.palette.mode === 'dark' 
-                      ? 'linear-gradient(135deg, #2D1B69 0%, #1A1F26 100%)' 
-                      : `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)`, 
-                    textAlign: 'center', border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`
+                    p: 2, borderRadius: '14px', 
+                    bgcolor: alpha(theme.palette.text.primary, 0.02), 
+                    border: `1px solid ${theme.palette.divider}` 
                   }}>
-                    <Typography variant="body2" sx={{ fontWeight: 800, fontSize: '0.8rem', mb: 0.5 }}>"Small progress leads to results."</Typography>
-                    <Typography variant="caption" sx={{ color: alpha(theme.palette.text.secondary, 0.8), fontWeight: 700, fontSize: '0.7rem' }}>Stay consistent. Stay successful.</Typography>
+                    <Stack direction="row" sx={{ '& > *': { flex: 1, textAlign: 'center' } }}>
+                      <Box>
+                        <Typography sx={{ fontWeight: 900, fontSize: '1.25rem', lineHeight: 1.2 }}>{stats.total}</Typography>
+                        <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800, fontSize: '0.6rem', letterSpacing: '0.05em', mt: 0.5, display: 'block' }}>TOTAL</Typography>
+                      </Box>
+                      <Box sx={{ borderLeft: `1px solid ${theme.palette.divider}`, borderRight: `1px solid ${theme.palette.divider}` }}>
+                        <Typography sx={{ fontWeight: 900, fontSize: '1.25rem', lineHeight: 1.2, color: theme.palette.success.main }}>{stats.completed}</Typography>
+                        <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800, fontSize: '0.6rem', letterSpacing: '0.05em', mt: 0.5, display: 'block' }}>DONE</Typography>
+                      </Box>
+                      <Box>
+                        <Typography sx={{ fontWeight: 900, fontSize: '1.25rem', lineHeight: 1.2, color: theme.palette.warning.main }}>{stats.pending}</Typography>
+                        <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800, fontSize: '0.6rem', letterSpacing: '0.05em', mt: 0.5, display: 'block' }}>PENDING</Typography>
+                      </Box>
+                    </Stack>
+                  </Box>
+                </Box>
+
+                {/* Quote Card — Premium Glow */}
+                <Box sx={{ px: 3, pb: 3 }}>
+                  <Box sx={{ 
+                    p: 2.5, borderRadius: '14px', textAlign: 'center',
+                    background: theme.palette.mode === 'dark' 
+                      ? `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.15)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)` 
+                      : `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.08)} 0%, ${alpha(theme.palette.primary.main, 0.03)} 100%)`, 
+                    border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+                    boxShadow: `0 4px 20px ${alpha(theme.palette.primary.main, 0.06)}`
+                  }}>
+                    <Typography sx={{ fontWeight: 800, fontSize: '0.8rem', mb: 0.5, lineHeight: 1.5 }}>"Small progress leads to results."</Typography>
+                    <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700, fontSize: '0.65rem' }}>Stay consistent. Stay successful.</Typography>
                   </Box>
                 </Box>
               </Card>

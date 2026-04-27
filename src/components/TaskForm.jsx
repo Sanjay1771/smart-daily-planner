@@ -101,7 +101,7 @@ function TaskForm({ addTask }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            px: 4,
+            px: { xs: 2.5, md: 4 },
             py: 2.5,
             cursor: 'pointer',
             userSelect: 'none',
@@ -133,7 +133,7 @@ function TaskForm({ addTask }) {
         </Box>
 
         <Collapse in={isExpanded}>
-          <Box component="form" onSubmit={handleSubmit} sx={{ p: 4 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ p: { xs: 2.5, md: 4 } }}>
             <Stack spacing={4}>
               <TextField
                 fullWidth

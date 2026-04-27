@@ -26,16 +26,18 @@ function WeekView({ currentDate, tasks, onDateClick, onEventClick }) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.default', transition: 'all 0.3s ease' }}>
+      {/* Scrollable wrapper for mobile */}
+      <Box sx={{ flex: 1, overflowX: 'auto', overflowY: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ minWidth: { xs: '800px', md: '100%' }, display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* Header */}
       <Box sx={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(8, 1fr)', 
-        borderBottom: '1px solid', 
-        borderColor: 'divider', 
+        borderBottom: '1px solid rgba(255,255,255,0.06)', 
         bgcolor: 'background.paper',
         transition: 'all 0.3s ease'
       }}>
-        <Box sx={{ py: 2, borderRight: '1px solid', borderColor: 'divider', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
+        <Box sx={{ py: 2, borderRight: '1px solid rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
           <Typography sx={{ fontSize: '11px', fontWeight: 900, color: 'text.secondary', letterSpacing: '0.05em' }}>TIME</Typography>
         </Box>
         {days.map(day => {
@@ -45,7 +47,7 @@ function WeekView({ currentDate, tasks, onDateClick, onEventClick }) {
               key={day.toString()} 
               onClick={() => onDateClick(format(day, 'yyyy-MM-dd'))} 
               sx={{ 
-                py: 1.5, borderRight: '1px solid', borderColor: 'divider', '&:last-child': { borderRight: 0 },
+                py: 1.5, borderRight: '1px solid rgba(255,255,255,0.04)', '&:last-child': { borderRight: 0 },
                 display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer',
                 bgcolor: isTdy ? alpha(theme.palette.primary.main, 0.05) : 'transparent',
                 transition: 'all 0.3s ease',
@@ -69,9 +71,9 @@ function WeekView({ currentDate, tasks, onDateClick, onEventClick }) {
       <Box sx={{ flex: 1, overflowY: 'auto', position: 'relative', transition: 'all 0.3s ease' }}>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', minHeight: '1200px', transition: 'all 0.3s ease' }}>
           {/* Time Column */}
-          <Box sx={{ borderRight: '1px solid', borderColor: 'divider', bgcolor: 'background.default', transition: 'all 0.3s ease' }}>
+          <Box sx={{ borderRight: '1px solid rgba(255,255,255,0.04)', bgcolor: 'background.default', transition: 'all 0.3s ease' }}>
             {hours.map(hour => (
-              <Box key={hour} sx={{ height: '64px', borderBottom: '1px solid', borderColor: 'divider', opacity: 0.3, display: 'flex', pt: 1, justifyContent: 'center', transition: 'all 0.3s ease' }}>
+              <Box key={hour} sx={{ height: '64px', borderBottom: '1px solid rgba(255,255,255,0.03)', opacity: 0.3, display: 'flex', pt: 1, justifyContent: 'center', transition: 'all 0.3s ease' }}>
                 <Typography sx={{ fontSize: '11px', fontWeight: 700, color: 'text.secondary' }}>
                   {format(new Date().setHours(hour, 0), 'h a')}
                 </Typography>
@@ -84,15 +86,14 @@ function WeekView({ currentDate, tasks, onDateClick, onEventClick }) {
             const formattedDate = format(day, "yyyy-MM-dd");
             const dayTasks = tasks.filter(t => (t.event_date || t.date) === formattedDate);
             return (
-              <Box key={day.toString()} sx={{ position: 'relative', borderRight: '1px solid', borderColor: 'divider', '&:last-child': { borderRight: 0 }, transition: 'all 0.3s ease' }}>
+              <Box key={day.toString()} sx={{ position: 'relative', borderRight: '1px solid rgba(255,255,255,0.04)', '&:last-child': { borderRight: 0 }, transition: 'all 0.3s ease' }}>
                 {hours.map(hour => (
                   <Box 
                     key={hour} 
                     onClick={() => onDateClick(formattedDate, `${hour.toString().padStart(2, '0')}:00`)} 
                     sx={{ 
                       height: '64px', 
-                      borderBottom: '1px solid', 
-                      borderColor: 'divider', 
+                      borderBottom: '1px solid rgba(255,255,255,0.03)', 
                       opacity: 0.3,
                       cursor: 'pointer', 
                       transition: 'all 0.2s ease',
@@ -139,6 +140,8 @@ function WeekView({ currentDate, tasks, onDateClick, onEventClick }) {
               </Box>
             );
           })}
+        </Box>
+      </Box>
         </Box>
       </Box>
     </Box>

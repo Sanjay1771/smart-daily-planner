@@ -26,11 +26,12 @@ function AppLayout({ user, onLogout }) {
         component="main"
         sx={{
           flexGrow: 1,
-          width: { md: `calc(100% - 260px)` },
+          width: { xs: '100%', md: `calc(100% - 260px)` },
           height: '100vh',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
+          overflowX: 'hidden',
           position: 'relative'
         }}
       >

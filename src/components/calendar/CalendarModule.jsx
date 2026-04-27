@@ -102,10 +102,12 @@ function CalendarModule({ tasks, setTasks, user }) {
   return (
     <Box sx={{ 
       display: 'flex', 
-      gap: { xs: 2, md: 4 }, 
-      height: 'calc(100vh - 140px)', 
+      flexDirection: { xs: 'column', md: 'row' },
+      gap: { xs: 2, md: 3 }, 
+      height: { xs: 'auto', md: 'calc(100vh - 200px)' }, 
+      minHeight: { xs: '50vh', md: 'auto' },
       bgcolor: 'background.default', 
-      p: { xs: 1, md: 0 },
+      p: 0,
       transition: 'all 0.3s ease'
     }}>
       {/* --- LEFT: CALENDAR COLUMN --- */}
@@ -126,12 +128,11 @@ function CalendarModule({ tasks, setTasks, user }) {
         <Box sx={{ 
           flex: 1, 
           overflow: 'hidden', 
-          borderRadius: '24px', 
-          border: '1px solid', 
-          borderColor: 'divider', 
-          bgcolor: 'background.paper',
+          borderRadius: '16px', 
+          border: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.03)' : '1px solid rgba(0,0,0,0.05)', 
+          bgcolor: theme.palette.mode === 'dark' ? 'rgba(10,10,14,0.95)' : 'background.paper',
           transition: 'all 0.3s ease',
-          boxShadow: theme.palette.mode === 'dark' ? '0 10px 40px rgba(0,0,0,0.4)' : '0 10px 40px rgba(0,0,0,0.03)'
+          boxShadow: theme.palette.mode === 'dark' ? '0 8px 40px rgba(0,0,0,0.6)' : '0 4px 24px rgba(0,0,0,0.04)'
         }}>
           {view === 'month' && (
             <MonthView

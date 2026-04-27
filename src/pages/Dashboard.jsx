@@ -206,7 +206,7 @@ function Dashboard({ user }) {
         display: 'flex', alignItems: 'center'
       }}>
         <Container maxWidth={false}>
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" alignItems="center" sx={{ flexWrap: 'wrap', gap: 1 }}>
             {/* Left: Identity Only */}
             <Stack direction="row" spacing={2} alignItems="center">
               <Avatar sx={{ 
@@ -299,27 +299,29 @@ function Dashboard({ user }) {
           {/* 3. CLEAN ACTION BAR (Search removed) */}
           <Box sx={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            bgcolor: 'background.paper', p: 1.5, borderRadius: '16px', border: '1px solid', borderColor: 'divider'
+            flexWrap: 'wrap', gap: 1.5,
+            bgcolor: 'background.paper', p: { xs: 1, sm: 1.5 }, borderRadius: '16px', border: '1px solid', borderColor: 'divider'
           }}>
-            <Stack direction="row" spacing={2} alignItems="center">
+            <Stack direction="row" spacing={{ xs: 1, sm: 2 }} alignItems="center" sx={{ flexWrap: 'wrap', gap: 1 }}>
               <Button
                 variant="contained" 
                 startIcon={<AddRoundedIcon />}
                 onClick={() => setShowTaskForm(!showTaskForm)}
-                sx={{ borderRadius: '10px', px: 3, py: 1, fontWeight: 800 }}
+                sx={{ borderRadius: '10px', px: { xs: 2, sm: 3 }, py: 1, fontWeight: 800, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}
               >
                 Assemble Task
               </Button>
 
-              <Divider orientation="vertical" flexItem sx={{ height: 24, my: 'auto', borderColor: 'divider' }} />
+              <Divider orientation="vertical" flexItem sx={{ height: 24, my: 'auto', borderColor: 'divider', display: { xs: 'none', sm: 'block' } }} />
 
-              <Stack direction="row" spacing={1.5}>
+              <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
                 {['all', 'pending', 'high'].map((f) => (
                   <Chip
                     key={f} label={f.charAt(0).toUpperCase() + f.slice(1)}
                     onClick={() => setFilter(f)}
                     sx={{
-                      height: 36, px: 1, fontWeight: 800, borderRadius: '10px',
+                      height: { xs: 30, sm: 36 }, px: 1, fontWeight: 800, borderRadius: '10px',
+                      fontSize: { xs: '0.75rem', sm: '0.8125rem' },
                       bgcolor: filter === f ? 'primary.main' : 'transparent',
                       color: filter === f ? 'white' : 'text.secondary',
                       border: '1px solid', borderColor: filter === f ? 'primary.main' : 'divider',
@@ -375,7 +377,7 @@ function Dashboard({ user }) {
                         }}>
                           {task.title}
                         </Typography>
-                        <Stack direction="row" spacing={2} alignItems="center">
+                        <Stack direction="row" spacing={1} alignItems="center" sx={{ flexWrap: 'wrap', gap: 0.5 }}>
                           <Chip 
                             label={task.category} 
                             size="small" 

@@ -72,12 +72,13 @@ function EventModal({ isOpen, onClose, onSave, onDelete, initialData, defaultDat
       onClose={onClose}
       PaperProps={{ 
         sx: { 
-          borderRadius: '24px', 
+          borderRadius: '20px', 
           bgcolor: 'background.paper', 
-          border: '1px solid',
-          borderColor: 'divider', 
+          border: '1px solid rgba(255,255,255,0.06)',
           backgroundImage: 'none', 
-          minWidth: '400px' 
+          maxWidth: '440px',
+          width: '100%',
+          mx: { xs: 2, md: 'auto' }
         } 
       }}
     >

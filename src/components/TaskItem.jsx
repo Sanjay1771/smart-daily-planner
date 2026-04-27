@@ -33,7 +33,7 @@ function TaskItem({ task, toggleComplete, deleteTask }) {
     <Paper
       elevation={0}
       sx={{
-        p: 2.5,
+        p: { xs: 1.5, md: 2.5 },
         borderRadius: '14px',
         bgcolor: 'background.paper',
         border: '1px solid',
@@ -73,7 +73,7 @@ function TaskItem({ task, toggleComplete, deleteTask }) {
             {task.title}
           </Typography>
           
-          <Stack direction="row" spacing={2.5} alignItems="center">
+          <Stack direction="row" spacing={2.5} alignItems="center" sx={{ flexWrap: 'wrap', gap: 0.5 }}>
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <CalendarMonthRoundedIcon sx={{ fontSize: 14, color: 'text.disabled' }} />
               <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800 }}>{formattedDate}</Typography>

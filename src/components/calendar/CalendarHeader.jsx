@@ -29,33 +29,34 @@ function CalendarHeader({ currentDate, setCurrentDate, view, setView }) {
         display: 'flex', 
         justifyContent: 'space-between',
         alignItems: 'center', 
-        mb: 4, 
-        px: 1,
+        flexWrap: 'wrap',
+        gap: 1.5,
+        mb: { xs: 2, md: 3 }, 
+        pt: { xs: 0.5, md: 1 },
+        px: 0.5,
         width: '100%',
         transition: 'all 0.3s ease'
       }}
     >
       {/* LEFT ZONE: Arrows + Today + Month Title */}
-      <Stack direction="row" alignItems="center" spacing={4} sx={{ transition: 'all 0.3s ease' }}>
-        <Stack direction="row" alignItems="center" spacing={2}>
+      <Stack direction="row" alignItems="center" spacing={1.5} sx={{ transition: 'all 0.3s ease', flexWrap: 'wrap', gap: 1 }}>
+        <Stack direction="row" alignItems="center" spacing={1}>
           <Stack 
             direction="row" 
             spacing={0.5} 
             sx={{ 
               bgcolor: 'background.paper', 
-              p: 0.6, 
-              borderRadius: '14px', 
-              border: '1px solid',
-              borderColor: 'divider',
-              boxShadow: theme.palette.mode === 'dark' ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.04)',
+              p: 0.5, 
+              borderRadius: '12px', 
+              border: '1px solid rgba(255,255,255,0.08)',
               transition: 'all 0.3s ease'
             }}
           >
-            <IconButton size="small" onClick={handlePrev} sx={{ color: 'text.primary', transition: 'all 0.2s ease', '&:hover': { bgcolor: 'action.hover', transform: 'translateX(-2px)' } }}>
-              <ChevronLeftRoundedIcon fontSize="small" />
+            <IconButton size="small" onClick={handlePrev} sx={{ color: 'text.primary', '&:hover': { bgcolor: 'action.hover' } }}>
+              <ChevronLeftRoundedIcon sx={{ fontSize: 20 }} />
             </IconButton>
-            <IconButton size="small" onClick={handleNext} sx={{ color: 'text.primary', transition: 'all 0.2s ease', '&:hover': { bgcolor: 'action.hover', transform: 'translateX(2px)' } }}>
-              <ChevronRightRoundedIcon fontSize="small" />
+            <IconButton size="small" onClick={handleNext} sx={{ color: 'text.primary', '&:hover': { bgcolor: 'action.hover' } }}>
+              <ChevronRightRoundedIcon sx={{ fontSize: 20 }} />
             </IconButton>
           </Stack>
           
@@ -65,14 +66,13 @@ function CalendarHeader({ currentDate, setCurrentDate, view, setView }) {
               bgcolor: 'background.paper', 
               color: 'text.primary', 
               textTransform: 'none', 
-              px: 2.5, 
-              height: 40, 
-              borderRadius: '12px', 
-              border: '1px solid',
-              borderColor: 'divider',
+              px: { xs: 1.5, md: 2 }, 
+              height: 36, 
+              borderRadius: '10px', 
+              border: '1px solid rgba(255,255,255,0.08)',
               fontWeight: 800,
-              fontSize: '0.85rem',
-              '&:hover': { bgcolor: 'action.hover', transform: 'translateY(-1px)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' },
+              fontSize: '0.8rem',
+              '&:hover': { bgcolor: 'action.hover' },
               transition: 'all 0.2s ease'
             }}
           >
@@ -81,17 +81,16 @@ function CalendarHeader({ currentDate, setCurrentDate, view, setView }) {
         </Stack>
 
         <Typography 
-          variant="h4" 
           sx={{ 
             fontWeight: 900, 
             color: 'text.primary', 
-            letterSpacing: '-0.04em',
+            letterSpacing: '-0.03em',
             whiteSpace: 'nowrap',
-            fontSize: { xs: '1.25rem', md: '1.75rem' },
+            fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' },
             transition: 'all 0.3s ease'
           }}
         >
-          {format(currentDate, 'MMMM')} <span style={{ color: theme.palette.text.secondary, fontWeight: 700, marginLeft: '8px', opacity: 0.6 }}>{format(currentDate, 'yyyy')}</span>
+          {format(currentDate, 'MMMM')} <span style={{ color: theme.palette.text.secondary, fontWeight: 700, marginLeft: '6px', opacity: 0.5 }}>{format(currentDate, 'yyyy')}</span>
         </Typography>
       </Stack>
 
@@ -101,11 +100,9 @@ function CalendarHeader({ currentDate, setCurrentDate, view, setView }) {
         spacing={0.5} 
         sx={{ 
           bgcolor: 'background.paper', 
-          p: 0.6, 
-          borderRadius: '14px', 
-          border: '1px solid',
-          borderColor: 'divider',
-          boxShadow: theme.palette.mode === 'dark' ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.04)',
+          p: 0.5, 
+          borderRadius: '12px', 
+          border: '1px solid rgba(255,255,255,0.08)',
           transition: 'all 0.3s ease'
         }}
       >
@@ -115,14 +112,14 @@ function CalendarHeader({ currentDate, setCurrentDate, view, setView }) {
             onClick={() => setView(v)}
             sx={{
               textTransform: 'none',
-              px: 2.5,
-              py: 0.8,
-              borderRadius: '10px',
-              color: view === v ? 'text.primary' : 'text.secondary',
-              bgcolor: view === v ? (theme.palette.mode === 'dark' ? alpha(theme.palette.primary.main, 0.2) : alpha(theme.palette.primary.main, 0.08)) : 'transparent',
+              px: { xs: 1.5, sm: 2, md: 2 },
+              py: 0.6,
+              borderRadius: '8px',
+              color: view === v ? 'primary.main' : 'text.secondary',
+              bgcolor: view === v ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
               fontWeight: 800,
-              fontSize: '0.8rem',
-              minWidth: '80px',
+              fontSize: { xs: '0.7rem', sm: '0.8rem' },
+              minWidth: { xs: '52px', md: '68px' },
               '&:hover': { bgcolor: view === v ? alpha(theme.palette.primary.main, 0.15) : 'action.hover' },
               transition: 'all 0.2s ease'
             }}

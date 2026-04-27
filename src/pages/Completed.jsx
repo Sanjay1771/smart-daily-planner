@@ -45,12 +45,12 @@ function Completed({ user }) {
   }, [fetchCompletedTasks]);
 
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
+    <Container maxWidth="lg" sx={{ py: { xs: 3, md: 6 } }}>
       <Stack spacing={6} sx={{ textAlign: 'center', alignItems: 'center' }}>
         <Box>
           <Box sx={{ 
-            width: 80, 
-            height: 80, 
+            width: { xs: 60, md: 80 }, 
+            height: { xs: 60, md: 80 }, 
             bgcolor: alpha(muiTheme.palette.success.main, 0.1), 
             color: 'success.main', 
             borderRadius: '50%', 
@@ -60,13 +60,13 @@ function Completed({ user }) {
             mb: 3,
             mx: 'auto'
           }}>
-            <EmojiEventsRoundedIcon sx={{ fontSize: 40 }} />
+            <EmojiEventsRoundedIcon sx={{ fontSize: { xs: 30, md: 40 } }} />
           </Box>
-          <Typography variant="h3" sx={{ fontWeight: 900, mb: 1, letterSpacing: '-0.04em' }}>Victory Lap</Typography>
+          <Typography variant="h3" sx={{ fontWeight: 900, mb: 1, letterSpacing: '-0.04em', fontSize: { xs: '1.75rem', sm: '2rem', md: '3rem' } }}>Victory Lap</Typography>
           <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 600 }}>Celebrate your completed milestones and wins.</Typography>
         </Box>
 
-        <Grid container spacing={4} sx={{ maxWidth: 800 }}>
+        <Grid container spacing={{ xs: 2, md: 4 }} sx={{ maxWidth: { xs: '100%', md: 800 } }}>
            <Grid item xs={12} sm={6}>
               <Paper elevation={0} sx={{ p: 4, borderRadius: '24px', border: '1px solid', borderColor: 'divider' }}>
                  <CheckCircleRoundedIcon sx={{ fontSize: 32, color: 'success.main', mb: 2 }} />

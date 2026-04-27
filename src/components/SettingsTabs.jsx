@@ -67,14 +67,16 @@ function SettingsTabs({ user }) {
   const SettingRow = ({ label, desc, children }) => (
     <Box sx={{ 
       display: 'flex', 
-      alignItems: 'center', 
+      alignItems: { xs: 'flex-start', sm: 'center' }, 
       justifyContent: 'space-between', 
-      py: 3.5, 
+      flexWrap: 'wrap',
+      gap: 1.5,
+      py: { xs: 2.5, md: 3.5 }, 
       borderBottom: '1px solid', 
       borderColor: alpha(muiTheme.palette.divider, 0.5),
       '&:last-child': { borderBottom: 'none' }
     }}>
-      <Box sx={{ flex: 1, pr: 4 }}>
+      <Box sx={{ flex: 1, pr: { xs: 0, sm: 4 }, minWidth: 0 }}>
         <Typography variant="body2" sx={{ fontWeight: 800, color: 'text.primary' }}>{label}</Typography>
         <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, display: 'block', mt: 0.5 }}>{desc}</Typography>
       </Box>
@@ -118,7 +120,7 @@ function SettingsTabs({ user }) {
 
       {/* Content Area */}
       <Box sx={{ flex: 1 }}>
-        <Paper elevation={0} sx={{ p: 5, borderRadius: '24px', border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper' }}>
+        <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, borderRadius: { xs: '16px', md: '24px' }, border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper' }}>
           {activeTab === 'profile' && (
             <Stack spacing={5}>
               <Box>
@@ -126,7 +128,7 @@ function SettingsTabs({ user }) {
                 <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>Configure your global workspace identity.</Typography>
               </Box>
               
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 4, p: 4, bgcolor: alpha(muiTheme.palette.text.primary, 0.02), borderRadius: '20px', border: '1px solid', borderColor: 'divider' }}>
+              <Box sx={{ display: 'flex', alignItems: { xs: 'flex-start', sm: 'center' }, flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 2, md: 4 }, p: { xs: 2.5, md: 4 }, bgcolor: alpha(muiTheme.palette.text.primary, 0.02), borderRadius: '20px', border: '1px solid', borderColor: 'divider' }}>
                 <Avatar sx={{ width: 72, height: 72, bgcolor: 'primary.main', fontWeight: 900, borderRadius: '16px' }}>{user?.name?.[0]}</Avatar>
                 <Box>
                    <Typography variant="subtitle1" sx={{ fontWeight: 900 }}>Identity Visual</Typography>

@@ -63,19 +63,18 @@ function MonthView({ currentDate, selectedDate, tasks, onDateClick, onEventClick
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.default', transition: 'all 0.3s ease' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: theme.palette.mode === 'dark' ? 'rgba(10,10,14,1)' : 'background.paper' }}>
       {/* Weekday Header */}
       <Box sx={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(7, 1fr)', 
-        borderBottom: '1px solid', 
-        borderColor: 'divider', 
-        bgcolor: 'background.paper',
-        transition: 'all 0.3s ease'
+        borderBottom: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.06)' : '1px solid', 
+        borderColor: theme.palette.mode === 'dark' ? undefined : 'divider', 
+        bgcolor: theme.palette.mode === 'dark' ? 'rgba(16,16,20,0.9)' : alpha(theme.palette.background.default, 0.3),
       }}>
         {weekDays.map(day => (
-          <Box key={day} sx={{ py: 2, borderRight: '1px solid', borderColor: 'divider', '&:last-child': { borderRight: 0 }, transition: 'all 0.3s ease' }}>
-            <Typography align="center" sx={{ fontSize: '11px', fontWeight: 900, color: 'text.secondary', letterSpacing: '0.1em', opacity: 0.8 }}>
+          <Box key={day} sx={{ py: 1.5, borderRight: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.04)' : '1px solid', borderColor: theme.palette.mode === 'dark' ? undefined : 'divider', '&:last-child': { borderRight: 0 } }}>
+            <Typography align="center" sx={{ fontSize: '10px', fontWeight: 900, color: 'text.secondary', letterSpacing: '0.1em', opacity: 0.7 }}>
               {day}
             </Typography>
           </Box>
@@ -83,7 +82,7 @@ function MonthView({ currentDate, selectedDate, tasks, onDateClick, onEventClick
       </Box>
 
       {/* Days Grid */}
-      <Box sx={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridAutoRows: '1fr', transition: 'all 0.3s ease' }}>
+      <Box sx={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridAutoRows: '1fr' }}>
         {days.map((day, i) => {
           const isSel = isSameDay(day, selectedDate);
           const isCurrMonth = isSameMonth(day, monthStart);
@@ -95,34 +94,32 @@ function MonthView({ currentDate, selectedDate, tasks, onDateClick, onEventClick
               key={day.toString()}
               onClick={() => onDateClick(formattedDate)}
               sx={{
-                borderRight: '1px solid',
-                borderBottom: '1px solid',
-                borderColor: 'divider',
-                p: 1.5,
+                borderRight: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.04)' : '1px solid',
+                borderBottom: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.04)' : '1px solid',
+                borderColor: theme.palette.mode === 'dark' ? undefined : 'divider',
+                p: 1,
                 cursor: 'pointer',
                 position: 'relative',
                 bgcolor: isSel 
-                  ? (theme.palette.mode === 'dark' ? alpha(theme.palette.primary.main, 0.15) : alpha(theme.palette.primary.main, 0.04)) 
-                  : isCurrMonth ? 'background.paper' : (theme.palette.mode === 'dark' ? alpha(theme.palette.background.default, 0.3) : alpha(theme.palette.background.default, 0.6)),
+                  ? alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.15 : 0.04) 
+                  : isCurrMonth 
+                    ? (theme.palette.mode === 'dark' ? 'rgba(12,12,16,1)' : 'background.paper') 
+                    : (theme.palette.mode === 'dark' ? 'rgba(8,8,10,1)' : alpha(theme.palette.background.default, 0.5)),
                 boxShadow: isSel ? `inset 0 0 0 2px ${theme.palette.primary.main}` : 'none',
                 zIndex: isSel ? 1 : 0,
-                transition: 'all 0.2s ease-in-out',
+                transition: 'all 0.15s ease',
                 '&:hover': { 
-                  bgcolor: isSel ? alpha(theme.palette.primary.main, 0.18) : 'action.hover',
-                  zIndex: 2,
-                  boxShadow: theme.palette.mode === 'dark' ? '0 0 20px rgba(0,0,0,0.5)' : '0 4px 20px rgba(0,0,0,0.05)'
+                  bgcolor: isSel ? alpha(theme.palette.primary.main, 0.18) : (theme.palette.mode === 'dark' ? 'rgba(20,20,26,1)' : alpha(theme.palette.text.primary, 0.02)),
                 },
                 '&:nth-of-type(7n)': { borderRight: 0 }
               }}
             >
               <Box sx={{
-                width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px',
+                width: '26px', height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px',
                 bgcolor: isTdy ? 'primary.main' : 'transparent',
-                color: isTdy ? 'white' : (isCurrMonth ? 'text.primary' : 'text.secondary'),
-                fontSize: '13px', fontWeight: 900, mb: 1,
-                opacity: isCurrMonth ? 1 : 0.4,
-                transition: 'all 0.2s ease',
-                boxShadow: isTdy ? `0 4px 12px ${alpha(theme.palette.primary.main, 0.4)}` : 'none'
+                color: isTdy ? 'white' : (isCurrMonth ? 'text.primary' : 'text.disabled'),
+                fontSize: '12px', fontWeight: 900, mb: 0.5,
+                boxShadow: isTdy ? `0 3px 10px ${alpha(theme.palette.primary.main, 0.35)}` : 'none'
               }}>
                 {format(day, "d")}
               </Box>

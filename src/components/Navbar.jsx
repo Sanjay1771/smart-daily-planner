@@ -117,7 +117,7 @@ function Navbar({ pageTitle, user, onLogout, onMenuClick }) {
           </Box>
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: '6px', sm: '10px' } }}>
           <IconButton 
             onClick={handleToggleTheme} 
             color="inherit" 

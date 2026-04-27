@@ -56,11 +56,11 @@ function Archive({ user }) {
   );
 
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
+    <Container maxWidth="lg" sx={{ py: { xs: 3, md: 6 } }}>
       <Stack spacing={5}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: '-0.04em' }}>Task Archive</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: '-0.04em', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Task Archive</Typography>
             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 600 }}>Your legacy of productivity.</Typography>
           </Box>
           <Chip 

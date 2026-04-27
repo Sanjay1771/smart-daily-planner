@@ -9,6 +9,10 @@
   color-scheme: light dark;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 html,
 body,
 #root {
@@ -16,6 +20,7 @@ body,
   margin: 0;
   padding: 0;
   overflow: hidden; /* Lock global scrolling for app-style feel */
+  overflow-x: hidden; /* Prevent horizontal scroll at all times */
 }
 
 body {
