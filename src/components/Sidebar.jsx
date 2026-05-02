@@ -35,7 +35,7 @@ function Sidebar({ isOpen, setIsOpen, user }) {
     { label: 'Today', path: '/today', icon: <TodayRoundedIcon sx={{ fontSize: 20 }} /> },
     { label: 'Upcoming', path: '/upcoming', icon: <EventAvailableRoundedIcon sx={{ fontSize: 20 }} /> },
     { label: 'Calendar', path: '/calendar', icon: <CalendarMonthRoundedIcon sx={{ fontSize: 20 }} /> },
-    { label: 'Archive', path: '/archive', icon: <CheckCircleRoundedIcon sx={{ fontSize: 20 }} /> },
+
     { label: 'Completed', path: '/completed', icon: <BoltRoundedIcon sx={{ fontSize: 20 }} /> },
   ];
 

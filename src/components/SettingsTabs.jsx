@@ -160,7 +160,7 @@ function SettingsTabs({ user }) {
             <Stack spacing={5}>
               <Box>
                 <Typography variant="h5" sx={{ fontWeight: 900, mb: 1, letterSpacing: '-0.03em' }}>Data Infrastructure</Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>Manage your workspace archives and persistence.</Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>Manage your workspace data and persistence.</Typography>
               </Box>
 
               <Stack spacing={1}>

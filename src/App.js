@@ -13,7 +13,7 @@ import Dashboard from './pages/Dashboard';
 import Today from './pages/Today';
 import Upcoming from './pages/Upcoming';
 import CalendarPage from './pages/CalendarPage';
-import Archive from './pages/Archive';
+
 import Completed from './pages/Completed';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
@@ -110,7 +110,7 @@ function AppContent() {
             <Route path="/today" element={<PageTransition><Today user={user} /></PageTransition>} />
             <Route path="/upcoming" element={<PageTransition><Upcoming user={user} /></PageTransition>} />
             <Route path="/calendar" element={<PageTransition><CalendarPage user={user} /></PageTransition>} />
-            <Route path="/archive" element={<PageTransition><Archive user={user} /></PageTransition>} />
+
             <Route path="/completed" element={<PageTransition><Completed user={user} /></PageTransition>} />
             <Route path="/settings" element={<PageTransition><Settings user={user} /></PageTransition>} />
             <Route path="/profile" element={<PageTransition><Profile user={user} /></PageTransition>} />
