@@ -97,29 +97,36 @@ npm start
 
 📊 Dashboard
 
+
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/13ad5703-9ff2-4d13-a2b8-8aebfdcdfbcc" />
 
 📅 Today View
+
 
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/acc7f2fd-542d-4f29-a163-7b8e86643991" />
 
 ⏳ Upcoming Tasks
 
+
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/6f687493-c873-4c8d-81c2-61bc0ba952db" />
 
 🗓️ Calendar View
+
 
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/5721db32-b71f-450a-8c6b-b1ef724fdece" />
 
 ✅ Completed Tasks
 
+
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/ec574876-0b35-4ad8-b86a-121703628f2e" />
 
 👤 Profile
 
+
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/2cee7497-3cf0-4030-a087-69b19660f06d" />
 
 ⚙️ Settings
+
 
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/2cb73e4f-e11c-4bd9-ac5d-2a2476676f11" />
 
