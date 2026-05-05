@@ -1,70 +1,142 @@
-# Getting Started with Create React App
+# 🧠 Smart Daily Planner
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Smart Daily Planner is a modern task management web application designed to help users organize, track, and complete their daily activities efficiently.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+* 📅 Interactive Calendar (Month / Week / Day view)
+* ✅ Create, Edit, and Delete Tasks
+* 📌 Today and Upcoming Task Views
+* 🏷️ Task Categories (Work, Personal, etc.)
+* ✔️ Mark Tasks as Completed
+* 📊 Completed Tasks Page
+* 🌙 Dark / Light Mode Support
+* 📱 Responsive Design
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🧰 Tech Stack
 
-### `npm test`
+* ⚛️ React.js
+* 🎨 CSS / Material UI
+* 📅 FullCalendar (Calendar UI)
+* 🗄️ Database: Supabase (PostgreSQL)
+* 🔌 REST APIs for data handling
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🗄️ Database
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The application uses **Supabase** to store and manage task data.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 📌 Table: `tasks`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sql id="7t6b3o"
+id UUID PRIMARY KEY
+title TEXT
+category TEXT
+date TIMESTAMP
+time TEXT
+completed BOOLEAN
+created_at TIMESTAMP
+```
 
-### `npm run eject`
+### 📊 Functionality
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* Store tasks in database
+* Fetch tasks dynamically
+* Update task status (completed / pending)
+* Delete tasks
+* Real-time data handling (optional based on setup)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📂 Project Structure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash id="9lj1yq"
+src/
+ ├── components/
+ │    ├── calendar/
+ │    ├── TaskItem.jsx
+ │    ├── TaskForm.jsx
+ │    ├── Sidebar.jsx
+ │    └── ...
+ ├── pages/
+ │    ├── Dashboard.jsx
+ │    ├── Today.jsx
+ │    ├── Upcoming.jsx
+ │    ├── Calendar.jsx
+ │    ├── Completed.jsx
+ ├── contexts/
+ │    └── ThemeContext.js
+```
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🛠️ Installation
+---
+git clone https://github.com/Sanjay1771/smart-daily-planner.git 
+cd smart-daily-planner 
+npm install 
+npm start
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🎯 Key Highlights
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+* Clean and modern UI design
+* Modular component architecture
+* Efficient task management system
+* Database-integrated application using Supabase
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📸 Screenshots
 
-### Making a Progressive Web App
+📊 Dashboard
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/13ad5703-9ff2-4d13-a2b8-8aebfdcdfbcc" />
 
-### Advanced Configuration
+📅 Today View
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/acc7f2fd-542d-4f29-a163-7b8e86643991" />
 
-### Deployment
+⏳ Upcoming Tasks
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/6f687493-c873-4c8d-81c2-61bc0ba952db" />
 
-### `npm run build` fails to minify
+🗓️ Calendar View
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/5721db32-b71f-450a-8c6b-b1ef724fdece" />
+
+✅ Completed Tasks
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/ec574876-0b35-4ad8-b86a-121703628f2e" />
+
+👤 Profile
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/2cee7497-3cf0-4030-a087-69b19660f06d" />
+
+⚙️ Settings
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/2cb73e4f-e11c-4bd9-ac5d-2a2476676f11" />
+
+---
+
+## 👨‍💻 Author
+
+**Sanjay K**
+
+---
+
+## ⭐ Contribution
+
+This project is open for improvements and enhancements.
+
+---
+
+## 📄 License
+
+This project is open-source and available under the MIT License.
